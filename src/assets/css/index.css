@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply font-sans;
+        scrollbar-width: thin;
+    }
+}
