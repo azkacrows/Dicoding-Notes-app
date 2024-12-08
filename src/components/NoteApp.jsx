@@ -9,6 +9,17 @@ import NoteMainEditor from './NoteEditorPanel/NoteMainEditor';
 import { getInitialData, showFormattedDate } from '../utils';
 
 export default function NoteApp() {
+    // assign InitialData from getInitialData function
+    const InitialData = getInitialData();
+    // assign InitialData to default group
+    const [group, setGroup] = useState([
+        {
+            Title: 'Default',
+            konten: InitialData,
+        },
+    ]);
+
+    const [notes, setNotes] = useState(group[0].konten);
     return (
         <div className="container flex min-w-full min-h-screen">
             <div className="flex flex-row w-2/5">
