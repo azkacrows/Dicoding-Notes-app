@@ -7,7 +7,7 @@ import NoteMainEditor from './NoteEditorPanel/NoteMainEditor';
 
 // utils
 import { getInitialData } from '../utils';
-import { addNoteToGroup, moveNoteToGroup } from '../utils/logic';
+import { createNote, addNoteToGroup, moveNoteToGroup } from '../utils/logic';
 
 export default function NoteApp() {
     // State for groups and notes

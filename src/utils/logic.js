@@ -1,3 +1,15 @@
+// Buat catatan baru dengan ID unik
+function createNote(title, body) {
+    return {
+        id: Date.now(),
+        title,
+        folder,
+        body,
+        archived: false,
+        createdAt: new Date().toISOString(),
+    };
+}
+
 // Tambahkan catatan ke grup tertentu
 function addNoteToGroup(groups, note, groupTitle) {
     const groupExists = groups.some((group) => group.title === groupTitle);
@@ -56,4 +68,4 @@ function moveNoteToGroup(groups, noteId, sourceGroupTitle, targetGroupTitle) {
     return updatedGroups;
 }
 
-export { addNoteToGroup, moveNoteToGroup };
+export { createNote, addNoteToGroup, moveNoteToGroup };
