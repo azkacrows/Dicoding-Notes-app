@@ -11,9 +11,6 @@ import { addNoteToGroup, moveNoteToGroup } from '../utils/logic';
 
 export default function NoteApp() {
     // State for groups and notes
-    const [notes, setNotes] = useState(() => {
-        return group[0]?.content || [];
-    });
     const [group, setGroup] = useState(() => {
         const savedGroups = localStorage.getItem('groups');
         return savedGroups
@@ -24,6 +21,10 @@ export default function NoteApp() {
                       content: getInitialData(),
                   },
               ];
+    });
+
+    const [notes, setNotes] = useState(() => {
+        return group[0]?.content || [];
     });
 
     useEffect(() => {
