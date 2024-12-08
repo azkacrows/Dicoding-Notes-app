@@ -10,7 +10,7 @@ export default function NoteMainEditor() {
             <div className="flex flex-col w-full h-full px-8 py-2">
                 {/* Header Section */}
                 <NoteHeader />
-                <div className="flex flex-col w-full">
+                <div className="flex flex-col w-full h-full">
                     {/* Note Date Section */}
                     <NoteDateEditor />
                     <hr className="my-3" />
