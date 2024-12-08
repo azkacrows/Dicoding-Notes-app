@@ -6,30 +6,60 @@ import NoteListPanel from './NoteListPanel/NoteListPanel';
 import NoteMainEditor from './NoteEditorPanel/NoteMainEditor';
 
 // utils
-import { getInitialData, showFormattedDate } from '../utils';
+import { getInitialData } from '../utils';
+import { addNoteToGroup, moveNoteToGroup } from '../utils/logic';
 
 export default function NoteApp() {
-    // assign InitialData from getInitialData function
-    const InitialData = getInitialData();
-    // assign InitialData to default group
-    const [group, setGroup] = useState([
-        {
-            Title: 'Default',
-            konten: InitialData,
-        },
-    ]);
+    // State for groups and notes
+    const [notes, setNotes] = useState(() => {
+        return group[0]?.content || [];
+    });
+    const [group, setGroup] = useState(() => {
+        const savedGroups = localStorage.getItem('groups');
+        return savedGroups
+            ? JSON.parse(savedGroups)
+            : [
+                  {
+                      title: 'Default',
+                      content: getInitialData(),
+                  },
+              ];
+    });
 
-    const [notes, setNotes] = useState(group[0].konten);
+    useEffect(() => {
+        localStorage.setItem('groups', JSON.stringify(groups));
+    }, [groups]);
+
+    const handleAddNewNote = (newNote) => {
+        const updatedGroups = addNoteToGroup(groups, newNote, 'Default');
+        setGroups(updatedGroups);
+
+        setNotes(updatedGroups.find((group) => group.title === 'Default').content);
+    };
+
+    const handleMoveNote = (noteId, sourceGroup, targetGroup) => {
+        const updatedGroups = moveNoteToGroup(groups, noteId, sourceGroup, targetGroup);
+        setGroups(updatedGroups);
+        setNotes(
+            updatedGroups.find(
+                (group) => group.title === sourceGroup || group.title === targetGroup
+            ).content
+        );
+    };
+
     return (
         <div className="container flex min-w-full min-h-screen">
             <div className="flex flex-row w-2/5">
+                {/* Sidebar Panel */}
                 <div className="flex flex-col w-1/2 h-screen">
                     <Sidebar notes={notes} />
                 </div>
+                {/* Note List Panel */}
                 <div className="flex flex-col w-1/2 h-screen bg-base-200">
                     <NoteListPanel notes={notes} />
                 </div>
             </div>
+            {/* Main Editor Panel */}
             <div className="flex flex-col items-center w-3/5 h-screen">
                 <NoteMainEditor notes={notes} />
             </div>
