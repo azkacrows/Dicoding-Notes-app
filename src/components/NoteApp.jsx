@@ -6,10 +6,14 @@ import NoteListPanel from './NoteListPanel/NoteListPanel';
 import NoteMainEditor from './NoteEditorPanel/NoteMainEditor';
 
 // utils
-import { getInitialData } from '../utils';
-// import {  } from '../utils/logic';
+import { defaultGroup } from '../utils/logic';
 
 export default function NoteApp() {
+    const [groups, setGroups] = useState(defaultGroup);
+    const [Notes, setNotes] = useState(groups[0].groupContent);
+
+    console.log(Notes);
+
     return (
         <div className="container flex min-w-full min-h-screen">
             <div className="flex flex-row w-2/5">
