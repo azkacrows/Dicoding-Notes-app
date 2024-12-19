@@ -1,6 +1,6 @@
 import MoreButton from './MoreButton';
 
-export default function MoreComponent() {
+export default function MoreComponent({ activeGroupId }) {
     return (
         <div>
             <div className="flex flex-row justify-between m-4 mb-2 text-primary-content">

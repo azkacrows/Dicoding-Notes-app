@@ -1,0 +1,24 @@
+Main.jsx
+  Logic.js
+  NoteApp.jsx
+    Sidebar
+      HeaderComponent.jsx
+        SearchBox.jsx / SearchButton.jsx
+        NewNoteButton.jsx
+      RecentComponent.jsx
+        RecentNotesButton.jsx
+      FolderComponent.jsx
+        CreateFolderButton.jsx
+        FolderButton.jsx
+      MoreComponent
+        MoreButton.jsx
+    NoteListPanel.jsx
+      NoteListSorterButton.jsx
+      NoteListItem.jsx
+    NoteMainEditor.jsx / NoteMainNotFound.jsx
+      NoteHeader.jsx
+        NoteHeaderButton.jsx
+      NoteToolbar
+        NoteDateEditor.jsx
+        NoteFolderEditor.jsx
+        NoteBoardEditor.jsx

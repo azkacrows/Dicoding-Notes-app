@@ -1,7 +1,7 @@
 import CreateFolderButton from './CreateFolderButton';
 import FolderButton from './FolderButton';
 
-export default function FolderComponent({}) {
+export default function FolderComponent({ activeGroupId, handleSetActiveGroup, groups }) {
     return (
         <div>
             <div className="flex flex-row justify-between m-4 mb-2 text-primary-content">

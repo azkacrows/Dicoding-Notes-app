@@ -1,21 +1,21 @@
 // utils
 import { getInitialData } from '../utils';
 
-// Buat catatan baru dengan ID unik
+// create notes
 const createNote = (title, body) => ({
     id: +new Date(),
-    title,
+    title: title || 'judul',
     body,
     createAt: new Date().toISOString(),
     archived: false,
 });
 
-// Edit catatan
+// edit notes
 const editNote = (notes, noteId, updatedData) => {
     return notes.map((note) => (note.id === noteId ? { ...note, ...updatedData } : note));
 };
 
-// Hapus catatan
+// delete notes
 const deleteNote = (notes, noteId) => {
     return notes.filter((note) => note.id !== noteId);
 };
@@ -29,12 +29,12 @@ const defaultGroup = [
     { groupId: 50, groupName: 'Recents', groupContent: [] },
 ];
 
-// Buat grup baru
+// create group
 const createGroup = (groups, groupName) => {
     return [...groups, { groupId: +new Date(), groupName, groupContent: [] }];
 };
 
-// Edit grup
+// edit group
 const editGroup = (groups, groupId, updatedData) => {
     const nonEditableGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
     const groupToEdit = groups.find((group) => group.groupId === groupId);
@@ -47,7 +47,7 @@ const editGroup = (groups, groupId, updatedData) => {
     return groups;
 };
 
-// Tambahkan catatan ke grup tertentu
+// adding notes to some of group
 const addNoteToGroup = (groups, groupId, note) => {
     return groups.map((group) =>
         group.groupId === groupId
@@ -56,7 +56,7 @@ const addNoteToGroup = (groups, groupId, note) => {
     );
 };
 
-// Pindahkan catatan dari satu grup ke grup lain
+// moved notes between group
 const moveNoteBetweenGroups = (groups, sourceGroupId, targetGroupId, noteId) => {
     let noteToMove = null;
     const updatedGroups = groups.map((group) => {
@@ -81,7 +81,7 @@ const moveNoteBetweenGroups = (groups, sourceGroupId, targetGroupId, noteId) => 
     });
 };
 
-// Hapus grup
+// delete group
 const deleteGroup = (groups, groupId) => {
     const nonDeletableGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
     const groupToDelete = groups.find((group) => group.groupId === groupId);
@@ -89,6 +89,48 @@ const deleteGroup = (groups, groupId) => {
         return groups.filter((group) => group.groupId !== groupId);
     }
     return groups;
+};
+
+// display notes by group
+const displayNotesByGroup = (groups, groupId) => {
+    const group = groups.find((group) => group.groupId === groupId);
+    return group ? group.groupContent : [];
+};
+
+// display recently opened notes
+const displayRecentNotes = (groups) => {
+    const recentGroup = groups.find((group) => group.groupName === 'Recents');
+    return recentGroup ? recentGroup.groupContent : [];
+};
+
+// display searched notes
+const displaySearchedNotes = (notes, searchQuery) => {
+    return notes.filter(
+        (note) =>
+            note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            note.body.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+};
+
+// sorting notes ascending or descending
+const sortNotes = (notes, order = 'asc') => {
+    return [...notes].sort((a, b) => {
+        if (order === 'asc') {
+            return new Date(a.createAt) - new Date(b.createAt);
+        } else {
+            return new Date(b.createAt) - new Date(a.createAt);
+        }
+    });
+};
+
+// adding notes to archived array
+const addNoteToArchived = (groups, noteId) => {
+    return moveNoteBetweenGroups(groups, 10, 30, noteId); // Default to Archived Notes
+};
+
+// adding notes to favorite array
+const addNoteToFavorites = (groups, noteId) => {
+    return moveNoteBetweenGroups(groups, 10, 20, noteId); // Default to Favorites
 };
 
 export {
@@ -101,4 +143,10 @@ export {
     addNoteToGroup,
     moveNoteBetweenGroups,
     deleteGroup,
+    displayNotesByGroup,
+    displayRecentNotes,
+    displaySearchedNotes,
+    sortNotes,
+    addNoteToArchived,
+    addNoteToFavorites,
 };
