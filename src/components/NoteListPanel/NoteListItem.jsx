@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-export default function MyCard({ active, title, date, body }) {
+export default function MyCard({ active, title, date, body, onSelectedNoteId }) {
     const activeCard = active ? '!bg-primary/80' : '';
     const cardFullDate = new Date(date).toLocaleDateString('id-ID', {
         weekday: 'long',
