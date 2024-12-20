@@ -9,7 +9,7 @@ export default function MyCard({ active, title, date, body }) {
     });
     return (
         <div
-            className={`card w-auto bg-base-300/40 shadow-2xl ml-4 mr-2 max-h-32 rounded-sm ${activeCard}`}
+            className={`card w-auto bg-base-300/40 shadow-2xl ml-4 mr-2 max-h-32 rounded-sm hover:cursor-pointer ${activeCard}`}
         >
             <div className="w-full gap-1 p-3 card-body">
                 <h2 className="text-lg text-white card-title line-clamp-1">{title}</h2>
