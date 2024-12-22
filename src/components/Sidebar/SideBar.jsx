@@ -6,7 +6,7 @@ import MoreComponent from './SidebarFolder/MoreSection/MoreComponent';
 export default function Sidebar({ handleCreateNote }) {
     return (
         <div className="flex flex-col">
-            <HeaderComponent handleCreateNotes={handleCreateNote} />
+            <HeaderComponent handleCreateNote={handleCreateNote} />
             <RecentComponent />
             <FolderComponent />
             <MoreComponent />

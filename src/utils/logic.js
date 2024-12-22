@@ -1,21 +1,21 @@
 // utils
 import { getInitialData } from '../utils';
 
-// create notes
+// FINISHED create notes
 const createNote = (title, body) => ({
     id: +new Date(),
-    title: title || 'judul',
+    title: 'judul',
     body,
     createAt: new Date().toISOString(),
     archived: false,
 });
 
-// edit notes
+// TODO edit notes
 const editNote = (notes, noteId, updatedData) => {
     return notes.map((note) => (note.id === noteId ? { ...note, ...updatedData } : note));
 };
 
-// delete notes
+// TODO delete notes
 const deleteNote = (notes, noteId) => {
     return notes.filter((note) => note.id !== noteId);
 };

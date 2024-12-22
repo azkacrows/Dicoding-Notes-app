@@ -19,7 +19,7 @@ export default function HeaderComponent({ handleCreateNote }) {
                 <SearchButton />
             </div>
             <div className="flex flex-row items-center justify-center my-4 text-white">
-                <NewNoteButton onAddNote={handleCreateNote} />
+                <NewNoteButton handleCreateNote={handleCreateNote} />
             </div>
         </div>
     );

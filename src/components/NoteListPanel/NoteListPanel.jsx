@@ -2,7 +2,7 @@
 import NoteListItem from './NoteListItem';
 import NoteListSorterButton from './NoteListSorterButton';
 
-export default function NoteListPanel({ notes, selectedNoteId, onSelectedNoteId }) {
+export default function NoteListPanel({ notes, selectedNote }) {
     return (
         <div className="flex flex-col w-full h-full">
             <div className="flex flex-row justify-between mx-4 mt-5 mb-2">
@@ -16,6 +16,14 @@ export default function NoteListPanel({ notes, selectedNoteId, onSelectedNoteId 
                     body="It's hard to believe that June is already over! Looking back on the month, there were a few highlights that stand out to me."
                     date={new Date()}
                 /> */}
+                {notes.map((note) => (
+                    <NoteListItem
+                        key={note.id}
+                        title={note.title}
+                        body={note.body}
+                        date={note.createdAt}
+                    />
+                ))}
             </div>
         </div>
     );

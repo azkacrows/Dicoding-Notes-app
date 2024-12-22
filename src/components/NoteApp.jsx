@@ -31,16 +31,23 @@ export default function NoteApp() {
     const [notes, setNotes] = useState(defaultGroup[0].groupContent);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
 
-    // create notes
+    // FINISHED create notes
     function handleCreateNote(title, body) {
         const newNote = createNote(title, body);
         setNotes([...notes, newNote]);
         setSelectedNoteId(newNote.id); // Pilih note baru secara otomatis
     }
 
-    // edit notes
+    // TODO edit notes
     function handleEditNote(noteId, updatedData) {
         const updatedNotes = editNote(notes, noteId, updatedData);
+        setNotes(updatedNotes);
+    }
+    const selectedNote = notes.find((note) => note.id === selectedNoteId);
+
+    // TODO delete notes
+    function handleDeleteNote(noteId) {
+        const updatedNotes = deleteNote(notes, noteId);
         setNotes(updatedNotes);
     }
     return (
@@ -48,23 +55,16 @@ export default function NoteApp() {
             <div className="flex flex-row w-2/5">
                 {/* Sidebar Panel */}
                 <div className="flex flex-col w-1/2 h-screen">
-                    <Sidebar handleCreateNotes={handleCreateNote} />
+                    <Sidebar handleCreateNote={handleCreateNote} />
                 </div>
                 {/* Note List Panel */}
                 <div className="flex flex-col w-1/2 h-screen bg-base-200">
-                    <NoteListPanel
-                        notes={notes}
-                        selectedNoteId={selectedNoteId}
-                        onSelectedNoteId={setSelectedNoteId}
-                    />
+                    <NoteListPanel notes={notes} selectedNote={selectedNote} />
                 </div>
             </div>
             {/* Main Editor Panel */}
             <div className="flex flex-col items-center w-3/5 h-screen">
-                <NoteMainEditor
-                    notes={notes.find((note) => note.id === selectedNoteId)}
-                    onEditNote={handleEditNote}
-                />
+                <NoteMainEditor notes={notes.find((note) => note.id === selectedNoteId)} />
             </div>
         </div>
     );
