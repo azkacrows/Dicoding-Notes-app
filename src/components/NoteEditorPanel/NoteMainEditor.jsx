@@ -3,12 +3,13 @@ import NoteDateEditor from './NoteToolbar/NoteDate/NoteDateEditor';
 import NoteFolderEditor from './NoteToolbar/NoteFolder/NoteFolderEditor';
 import NoteWSIWYGEditor from './NoteToolbar/NoteWSIWYG/NoteWSIWYGEditor';
 import NoteBoardEditor from './NoteToolbar/NoteBoard/NoteBoardEditor';
-import NoteMainNotFound from './NoteMainNotFound';
+import NoOpenedNotes from './NoOpenedNotes';
 
 export default function NoteMainEditor() {
     return (
         <div className="flex flex-col w-full h-full p-2">
-            <div className="flex flex-col w-full h-full px-8 py-2">
+            <NoOpenedNotes />
+            {/* <div className="flex flex-col w-full h-full px-8 py-2">
                 <NoteHeader />
                 <div className="flex flex-col w-full h-full">
                     <NoteDateEditor />
@@ -22,8 +23,7 @@ export default function NoteMainEditor() {
 
                     <NoteBoardEditor />
                 </div>
-            </div>
-            {/* <NoteMainNotFound /> */}
+            </div> */}
         </div>
     );
 }

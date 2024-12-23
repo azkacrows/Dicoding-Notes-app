@@ -1,7 +1,7 @@
-export default function CreateFolderButton({ onClick }) {
+export default function CreateFolderButton({ handleCreateGroup }) {
     return (
         <button
-            onClick={onClick}
+            onClick={handleCreateGroup}
             className="flex items-center cursor-pointer fill-current opacity-60 active:opacity-30"
             type="button"
         >

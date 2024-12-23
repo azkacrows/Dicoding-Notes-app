@@ -1,6 +1,11 @@
+import { useState, useEffect } from 'react';
+
 // fragment
 import NoteListItem from './NoteListItem';
 import NoteListSorterButton from './NoteListSorterButton';
+
+// utils
+import { sortNotes } from '../../utils/logic';
 
 export default function NoteListPanel({ notes, selectedNote }) {
     return (
@@ -16,14 +21,6 @@ export default function NoteListPanel({ notes, selectedNote }) {
                     body="It's hard to believe that June is already over! Looking back on the month, there were a few highlights that stand out to me."
                     date={new Date()}
                 /> */}
-                {notes.map((note) => (
-                    <NoteListItem
-                        key={note.id}
-                        title={note.title}
-                        body={note.body}
-                        date={note.createdAt}
-                    />
-                ))}
             </div>
         </div>
     );

@@ -3,13 +3,13 @@ import RecentComponent from './SidebarFolder/RecentSection/RecentComponent';
 import FolderComponent from './SidebarFolder/FolderSection/FolderComponent';
 import MoreComponent from './SidebarFolder/MoreSection/MoreComponent';
 
-export default function Sidebar({ handleCreateNote }) {
+export default function Sidebar({ handleCreateNote, handleCreateGroup, groups }) {
     return (
         <div className="flex flex-col">
             <HeaderComponent handleCreateNote={handleCreateNote} />
-            <RecentComponent />
-            <FolderComponent />
-            <MoreComponent />
+            <RecentComponent groups={groups} />
+            <FolderComponent groups={groups} handleCreateGroup={handleCreateGroup} />
+            <MoreComponent groups={groups} />
         </div>
     );
 }

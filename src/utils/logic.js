@@ -1,23 +1,68 @@
 // utils
 import { getInitialData } from '../utils';
 
-// FINISHED create notes
+// create notes
 const createNote = (title, body) => ({
     id: +new Date(),
-    title: 'judul',
+    title: 'Undefined',
     body,
-    createAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
     archived: false,
 });
 
-// TODO edit notes
+// edit notes
 const editNote = (notes, noteId, updatedData) => {
     return notes.map((note) => (note.id === noteId ? { ...note, ...updatedData } : note));
 };
 
-// TODO delete notes
-const deleteNote = (notes, noteId) => {
-    return notes.filter((note) => note.id !== noteId);
+// delete notes
+const deleteNote = (groups, groupId, noteId) => {
+    let noteToTrash = null;
+    const updatedGroups = groups.map((group) => {
+        if (group.groupId === groupId) {
+            noteToTrash = group.groupContent.find((note) => note.id === noteId);
+            return {
+                ...group,
+                groupContent: group.groupContent.filter((note) => note.id !== noteId),
+            };
+        }
+        return group;
+    });
+
+    return updatedGroups.map((group) => {
+        if (group.groupName === 'Trash' && noteToTrash) {
+            return {
+                ...group,
+                groupContent: [...group.groupContent, noteToTrash],
+            };
+        }
+        return group;
+    });
+};
+
+//  restore notes from Trash to previous group
+const restoreNoteFromTrash = (groups, noteId, targetGroupId) => {
+    let noteToRestore = null;
+    const updatedGroups = groups.map((group) => {
+        if (group.groupName === 'Trash') {
+            noteToRestore = group.groupContent.find((note) => note.id === noteId);
+            return {
+                ...group,
+                groupContent: group.groupContent.filter((note) => note.id !== noteId),
+            };
+        }
+        return group;
+    });
+
+    return updatedGroups.map((group) => {
+        if (group.groupId === targetGroupId && noteToRestore) {
+            return {
+                ...group,
+                groupContent: [...group.groupContent, noteToRestore],
+            };
+        }
+        return group;
+    });
 };
 
 // Grup default
@@ -31,12 +76,12 @@ const defaultGroup = [
 
 // create group
 const createGroup = (groups, groupName) => {
-    return [...groups, { groupId: +new Date(), groupName, groupContent: [] }];
+    return [...groups, { groupId: +new Date(), groupName: 'Undefined', groupContent: [] }];
 };
 
 // edit group
 const editGroup = (groups, groupId, updatedData) => {
-    const nonEditableGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
+    const nonEditableGroups = ['Default', 'Favorites', 'Trash', 'Recents', 'Archived Notes'];
     const groupToEdit = groups.find((group) => group.groupId === groupId);
 
     if (groupToEdit && !nonEditableGroups.includes(groupToEdit.groupName)) {
@@ -45,15 +90,6 @@ const editGroup = (groups, groupId, updatedData) => {
         );
     }
     return groups;
-};
-
-// adding notes to some of group
-const addNoteToGroup = (groups, groupId, note) => {
-    return groups.map((group) =>
-        group.groupId === groupId
-            ? { ...group, groupContent: [...group.groupContent, note] }
-            : group
-    );
 };
 
 // moved notes between group
@@ -83,7 +119,7 @@ const moveNoteBetweenGroups = (groups, sourceGroupId, targetGroupId, noteId) => 
 
 // delete group
 const deleteGroup = (groups, groupId) => {
-    const nonDeletableGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
+    const nonDeletableGroups = ['Default', 'Favorites', 'Trash', 'Recents', 'Archived Notes'];
     const groupToDelete = groups.find((group) => group.groupId === groupId);
     if (groupToDelete && !nonDeletableGroups.includes(groupToDelete.groupName)) {
         return groups.filter((group) => group.groupId !== groupId);
@@ -98,9 +134,19 @@ const displayNotesByGroup = (groups, groupId) => {
 };
 
 // display recently opened notes
-const displayRecentNotes = (groups) => {
+const displayRecentNotes = (groups, note) => {
     const recentGroup = groups.find((group) => group.groupName === 'Recents');
-    return recentGroup ? recentGroup.groupContent : [];
+    if (recentGroup) {
+        const updatedRecents = [
+            { ...note, accessedAt: new Date().toISOString() },
+            ...recentGroup.groupContent.filter((n) => n.id !== note.id),
+        ].slice(0, 3);
+
+        return groups.map((group) =>
+            group.groupName === 'Recents' ? { ...group, groupContent: updatedRecents } : group
+        );
+    }
+    return groups;
 };
 
 // display searched notes
@@ -116,9 +162,9 @@ const displaySearchedNotes = (notes, searchQuery) => {
 const sortNotes = (notes, order = 'asc') => {
     return [...notes].sort((a, b) => {
         if (order === 'asc') {
-            return new Date(a.createAt) - new Date(b.createAt);
+            return new Date(a.createdAt) - new Date(b.createdAt);
         } else {
-            return new Date(b.createAt) - new Date(a.createAt);
+            return new Date(b.createdAt) - new Date(a.createdAt);
         }
     });
 };
@@ -138,9 +184,9 @@ export {
     createNote,
     editNote,
     deleteNote,
+    restoreNoteFromTrash,
     createGroup,
     editGroup,
-    addNoteToGroup,
     moveNoteBetweenGroups,
     deleteGroup,
     displayNotesByGroup,
