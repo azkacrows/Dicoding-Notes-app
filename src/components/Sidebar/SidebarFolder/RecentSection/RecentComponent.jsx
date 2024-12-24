@@ -10,7 +10,12 @@ export default function RecentComponent({ groups }) {
                     title={notes ? notes[0].title : ''}
                 /> */}
                 {groups[4].groupContent.map((note, index) => (
-                    <RecentNotesButton title={note.title} key={index} />
+                    <RecentNotesButton
+                        key={index}
+                        title={note.title}
+                        onClick={() => handleSelectNoteClick(note.id)}
+                        recentActive={note.id === activeNoteId}
+                    />
                 ))}
             </div>
         </div>

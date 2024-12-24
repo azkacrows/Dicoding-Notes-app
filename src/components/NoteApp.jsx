@@ -65,11 +65,15 @@ export default function NoteApp() {
     // TODO Selected Note
     function handleSelectNoteClick(noteId) {
         setSelectedNoteId(noteId);
+
+        const selectedNote = notes.find((note) => note.id === noteId);
+
+        if (selectedNote) {
+            // Update grup Recents dengan note yang diakses
+            const updatedGroups = displayRecentNotes(groups, selectedNote);
+            setGroups(updatedGroups);
+        }
     }
-
-    // TODO Display Recent Note
-
-    // TODO Select Recent Note
 
     // TODO Display Searched Note
     function handleDisplaySearchedNotes(query) {
