@@ -30,6 +30,7 @@ export default function NoteApp() {
     const [selectedGroupId, setSelectedGroupId] = useState(null);
     const [notes, setNotes] = useState(defaultGroup[0].groupContent);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // FINISHED Selected Group
     useEffect(() => {
@@ -67,14 +68,13 @@ export default function NoteApp() {
     }
 
     // TODO Display Recent Note
-    function handleDisplayRecentNotes() {
-        const recentNotes = displayRecentNotes(groups, notes);
-        setGroups(recentNotes);
-    }
 
     // TODO Select Recent Note
-    function handleSelectRecentNoteClick(noteId) {
-        setSelectedNoteId(noteId);
+
+    // TODO Display Searched Note
+    function handleDisplaySearchedNotes(query) {
+        const searchedNotes = displaySearchedNotes(notes, query);
+        setNotes(searchedNotes);
     }
 
     return (
