@@ -45,7 +45,7 @@ export default function NoteApp() {
         setSelectedGroupId(groupId);
     }
 
-    console.log(selectedGroupId);
+    // console.log(selectedGroupId);
 
     // FINISHED create Groups
     function handleCreateGroup(groupName) {
@@ -59,6 +59,22 @@ export default function NoteApp() {
         const newNote = createNote(title, body);
         setNotes([...notes, newNote]);
         setSelectedNoteId(newNote.id); // Pilih note baru secara otomatis
+    }
+
+    // TODO Selected Note
+    function handleSelectNoteClick(noteId) {
+        setSelectedNoteId(noteId);
+    }
+
+    // TODO Display Recent Note
+    function handleDisplayRecentNotes() {
+        const recentNotes = displayRecentNotes(groups, notes);
+        setGroups(recentNotes);
+    }
+
+    // TODO Select Recent Note
+    function handleSelectRecentNoteClick(noteId) {
+        setSelectedNoteId(noteId);
     }
 
     return (

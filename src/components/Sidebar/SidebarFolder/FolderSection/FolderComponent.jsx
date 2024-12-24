@@ -14,25 +14,24 @@ export default function FolderComponent({
                 <CreateFolderButton handleCreateGroup={handleCreateGroup} />
             </div>
             <div className="lg:max-2xl:h-[7.5rem] h-[4.8rem] overflow-y-auto">
-                {/* <FolderButton activeFolder /> */}
-                {groups.map((group, index) => {
-                    if (
-                        group.groupName !== 'Favorites' &&
-                        group.groupName !== 'Trash' &&
-                        group.groupName !== 'Recents' &&
-                        group.groupName !== 'Archived Notes'
-                    ) {
-                        return (
-                            <FolderButton
-                                groupId={group.groupId}
-                                handleSelectGroupClick={handleSelectGroupClick}
-                                title={group.groupName}
-                                key={index}
-                                activeFolder={selectedGroupId === groups.groupId}
-                            />
-                        );
-                    }
-                })}
+                {[...groups]
+                    .filter(
+                        (group) =>
+                            group.groupName !== 'Favorites' &&
+                            group.groupName !== 'Trash' &&
+                            group.groupName !== 'Recents' &&
+                            group.groupName !== 'Archived Notes'
+                    )
+                    .sort((a, b) => b.groupId - a.groupId)
+                    .map((group, index) => (
+                        <FolderButton
+                            groupId={group.groupId}
+                            handleSelectGroupClick={handleSelectGroupClick}
+                            title={group.groupName}
+                            key={index}
+                            activeFolder={selectedGroupId === group.groupId}
+                        />
+                    ))}
             </div>
         </div>
     );
