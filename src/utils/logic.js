@@ -2,13 +2,18 @@
 import { getInitialData } from '../utils';
 
 // create notes
-const createNote = (title, body) => ({
-    id: +new Date(),
-    title: 'Undefined',
-    body,
-    createdAt: new Date().toISOString(),
-    archived: false,
-});
+const createNote = (title, body) => {
+    const newNote = {
+        id: +new Date(),
+        title: title || 'Undefined', // Pastikan ada title
+        body,
+        createdAt: new Date().toISOString(),
+        archived: false,
+    };
+
+    // Tambahkan catatan baru ke grup Recents
+    return { note: newNote, groups: displayRecentNotes(defaultGroup, newNote) };
+};
 
 // edit notes
 const editNote = (notes, noteId, updatedData) => {
