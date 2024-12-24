@@ -97,7 +97,12 @@ export default function NoteApp() {
                 </div>
                 {/* Note List Panel */}
                 <div className="flex flex-col w-1/2 h-screen bg-base-200">
-                    <NoteListPanel />
+                    <NoteListPanel
+                        notes={notes}
+                        groups={groups}
+                        handleSelectNoteClick={handleSelectNoteClick}
+                        handleDisplaySearchedNotes={handleDisplaySearchedNotes}
+                    />
                 </div>
             </div>
             {/* Main Editor Panel */}
