@@ -1,4 +1,9 @@
-export default function FolderButton({ title, activeFolder = false }) {
+export default function FolderButton({
+    handleSelectGroupClick,
+    groupId,
+    title,
+    activeFolder = false,
+}) {
     let folderAktif;
     let ikonAktif;
 
@@ -9,7 +14,10 @@ export default function FolderButton({ title, activeFolder = false }) {
 
     return (
         <div className={folderAktif}>
-            <button className="flex items-center w-full px-3 py-2 text-current cursor-pointer fill-current">
+            <button
+                onClick={() => handleSelectGroupClick(groupId)}
+                className="flex items-center w-full px-3 py-2 text-current cursor-pointer fill-current"
+            >
                 <box-icon name={ikonAktif || 'folder'}></box-icon>
                 <span className="ml-2 truncate max-w-52">{title}</span>
             </button>

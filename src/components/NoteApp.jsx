@@ -31,14 +31,28 @@ export default function NoteApp() {
     const [notes, setNotes] = useState(defaultGroup[0].groupContent);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
 
+    // FINISHED Selected Group
+    useEffect(() => {
+        if (selectedGroupId) {
+            const selectedGroup = groups.find((group) => group.groupId === selectedGroupId);
+            if (selectedGroup) {
+                setNotes(selectedGroup.groupContent);
+            }
+        }
+    }, [selectedGroupId, groups]);
+
+    function handleSelectGroupClick(groupId) {
+        setSelectedGroupId(groupId);
+    }
+
+    console.log(selectedGroupId);
+
     // FINISHED create Groups
     function handleCreateGroup(groupName) {
         const newGroup = createGroup(groups, groupName);
         setGroups(newGroup);
         setSelectedGroupId(newGroup[newGroup.length - 1].groupId); // Pilih group baru secara otomatis
     }
-
-    // TODO Selected Group
 
     // FINISHED create notes
     function handleCreateNote(title, body) {
@@ -57,6 +71,8 @@ export default function NoteApp() {
                         groups={groups}
                         handleCreateNote={handleCreateNote}
                         handleCreateGroup={handleCreateGroup}
+                        selectedGroupId={selectedGroupId}
+                        handleSelectGroupClick={handleSelectGroupClick}
                     />
                 </div>
                 {/* Note List Panel */}
