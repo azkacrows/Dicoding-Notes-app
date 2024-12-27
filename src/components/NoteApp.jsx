@@ -11,15 +11,12 @@ import {
     createNote,
     editNote,
     deleteNote,
-    restoreNoteFromTrash,
     createGroup,
     editGroup,
     moveNoteBetweenGroups,
     deleteGroup,
-    displayNotesByGroup,
     displayRecentNotes,
     displaySearchedNotes,
-    sortNotes,
     addNoteToArchived,
     addNoteToFavorites,
 } from '../utils/logic';
@@ -27,9 +24,10 @@ import {
 export default function NoteApp() {
     // state
     const [groups, setGroups] = useState(defaultGroup);
-    const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const [selectedGroupId, setSelectedGroupId] = useState(10);
     const [notes, setNotes] = useState(defaultGroup[0].groupContent);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
+    const [searchedNotes, setSearchedNotes] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
 
     // FINISHED Selected Group
@@ -38,6 +36,8 @@ export default function NoteApp() {
             const selectedGroup = groups.find((group) => group.groupId === selectedGroupId);
             if (selectedGroup) {
                 setNotes(selectedGroup.groupContent);
+                setSearchedNotes(null);
+                setSearchQuery('');
             }
         }
     }, [selectedGroupId, groups]);
@@ -45,8 +45,6 @@ export default function NoteApp() {
     function handleSelectGroupClick(groupId) {
         setSelectedGroupId(groupId);
     }
-
-    // console.log(selectedGroupId);
 
     // FINISHED create Groups
     function handleCreateGroup(groupName) {
@@ -75,10 +73,16 @@ export default function NoteApp() {
         }
     }
 
-    // TODO Display Searched Note
-    function handleDisplaySearchedNotes(query) {
-        const searchedNotes = displaySearchedNotes(notes, query);
-        setNotes(searchedNotes);
+    // TODO Searched Note
+    function handleSearchNote(query) {
+        setSearchQuery(query);
+
+        if (query.trim() === '') {
+            setSearchedNotes(null);
+        } else {
+            const results = displaySearchedNotes(notes, query);
+            setSearchedNotes(results);
+        }
     }
 
     return (
@@ -87,9 +91,8 @@ export default function NoteApp() {
                 {/* Sidebar Panel */}
                 <div className="flex flex-col w-1/2 h-screen">
                     <Sidebar
-                        notes={notes}
-                        groups={groups}
                         handleCreateNote={handleCreateNote}
+                        groups={groups}
                         handleCreateGroup={handleCreateGroup}
                         selectedGroupId={selectedGroupId}
                         handleSelectGroupClick={handleSelectGroupClick}
@@ -98,10 +101,11 @@ export default function NoteApp() {
                 {/* Note List Panel */}
                 <div className="flex flex-col w-1/2 h-screen bg-base-200">
                     <NoteListPanel
-                        notes={notes}
-                        groups={groups}
+                        notes={notes || searchedNotes}
+                        selectedNoteId={selectedNoteId}
                         handleSelectNoteClick={handleSelectNoteClick}
-                        handleDisplaySearchedNotes={handleDisplaySearchedNotes}
+                        groups={groups}
+                        selectedGroupId={selectedGroupId}
                     />
                 </div>
             </div>
