@@ -3,16 +3,13 @@ import { getInitialData } from '../utils';
 
 // create notes
 const createNote = (title, body) => {
-    const newNote = {
+    return {
         id: +new Date(),
-        title: title || 'Undefined', // Pastikan ada title
+        title: 'Undefined',
         body,
         createdAt: new Date().toISOString(),
         archived: false,
     };
-
-    // Tambahkan catatan baru ke grup Recents
-    return { note: newNote, groups: displayRecentNotes(defaultGroup, newNote) };
 };
 
 // edit notes
@@ -135,15 +132,6 @@ const displayRecentNotes = (groups, note) => {
     return groups;
 };
 
-// display searched notes
-const displaySearchedNotes = (notes, searchQuery) => {
-    return notes.filter(
-        (note) =>
-            note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            note.body.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-};
-
 // sorting notes ascending or descending
 const sortNotes = (notes, order = 'asc') => {
     return [...notes].sort((a, b) => {
@@ -175,7 +163,6 @@ export {
     moveNoteBetweenGroups,
     deleteGroup,
     displayRecentNotes,
-    displaySearchedNotes,
     sortNotes,
     addNoteToArchived,
     addNoteToFavorites,
