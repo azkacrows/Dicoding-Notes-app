@@ -1,6 +1,15 @@
 // utils
 import { getInitialData } from '../utils';
 
+// Grup default
+const defaultGroup = [
+    { groupId: 10, groupName: 'Default', groupContent: getInitialData() },
+    { groupId: 20, groupName: 'Favorites', groupContent: [] },
+    { groupId: 30, groupName: 'Archived Notes', groupContent: [] },
+    { groupId: 40, groupName: 'Trash', groupContent: [] },
+    { groupId: 50, groupName: 'Recents', groupContent: [] },
+];
+
 // create notes
 const createNote = (title, body) => {
     return {
@@ -41,15 +50,6 @@ const deleteNote = (groups, groupId, noteId) => {
         return group;
     });
 };
-
-// Grup default
-const defaultGroup = [
-    { groupId: 10, groupName: 'Default', groupContent: getInitialData() },
-    { groupId: 20, groupName: 'Favorites', groupContent: [] },
-    { groupId: 30, groupName: 'Archived Notes', groupContent: [] },
-    { groupId: 40, groupName: 'Trash', groupContent: [] },
-    { groupId: 50, groupName: 'Recents', groupContent: [] },
-];
 
 // create group
 const createGroup = (groups, groupName) => {
@@ -132,17 +132,6 @@ const displayRecentNotes = (groups, note) => {
     return groups;
 };
 
-// sorting notes ascending or descending
-const sortNotes = (notes, order = 'asc') => {
-    return [...notes].sort((a, b) => {
-        if (order === 'asc') {
-            return new Date(a.createdAt) - new Date(b.createdAt);
-        } else {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        }
-    });
-};
-
 // adding notes to archived array
 const addNoteToArchived = (groups, noteId) => {
     return moveNoteBetweenGroups(groups, 10, 30, noteId); // Default to Archived Notes
@@ -163,7 +152,6 @@ export {
     moveNoteBetweenGroups,
     deleteGroup,
     displayRecentNotes,
-    sortNotes,
     addNoteToArchived,
     addNoteToFavorites,
 };

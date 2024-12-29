@@ -4,7 +4,7 @@ import SearchBox from './SearchBox';
 import SearchButton from './SearchButton';
 import NewNoteButton from './NewNoteButton';
 
-export default function HeaderComponent({ handleCreateNote, searchQuery, onSearchChange }) {
+export default function HeaderComponent({ handleSearchNote, handleCreateNote }) {
     const [searchActive, setSearchActive] = useState(false);
     const searchBoxRef = useRef(null);
 
@@ -24,7 +24,7 @@ export default function HeaderComponent({ handleCreateNote, searchQuery, onSearc
             <div className="flex flex-row justify-between m-4 mt-5 text-white">
                 {searchActive ? (
                     <div className="w-full" ref={searchBoxRef} onBlur={handleSearchBlur}>
-                        <SearchBox onChange={onSearchChange} value={searchQuery} autoFocus />
+                        <SearchBox onChange={handleSearchNote} autoFocus />
                     </div>
                 ) : (
                     <>

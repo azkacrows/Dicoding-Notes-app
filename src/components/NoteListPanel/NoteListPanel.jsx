@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // fragment
 import NoteListItem from './NoteListItem';
 import NoteListSorterButton from './NoteListSorterButton';
 import NoteListEmpty from './NoteListEmpty';
-
-// utils
-import { sortNotes } from '../../utils/logic';
 
 export default function NoteListPanel({
     notes,
@@ -18,43 +15,37 @@ export default function NoteListPanel({
 }) {
     const [sortOrder, setSortOrder] = useState('asc');
 
-    let selectedGroup = groups.find((group) => group.groupId === selectedGroupId);
-    // let selectedNote = selectedGroup.groupContent.find((note) => note.id === selectedNoteId);
-    // const sortedNotes = sortNotes(displayedNotes, sortOrder);
-    // console.log(selectedGroup.groupContent);
+    const groupSource = selectedGroupId
+        ? groups.find((group) => group.groupId === selectedGroupId)
+        : null;
 
-    if (searchedNotes) {
-        selectedGroup = searchedNotes;
+    console.log(groupSource);
+
+    function notesToDisplay() {
+        if (searchedNotes !== null && searchedNotes.length > 0) {
+            return searchedNotes;
+        } else {
+            return notes;
+        }
     }
 
-    function handleShortOrder() {
-        setSortOrder('des');
+    function handleSortOrder() {
+        notesToDisplay().sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a.id - b.id;
+                setSortOrder('desc');
+            } else {
+                return b.id - a.id;
+                setSortOrder('asc');
+            }
+        });
     }
     return (
         <div className="flex flex-col w-full h-full">
-            {selectedGroup.groupContent.length > 0 ? (
-                <>
-                    <div className="flex flex-row justify-between mx-4 mt-5 mb-2">
-                        <h1 className="text-2xl font-medium text-white">
-                            {selectedGroup.groupName}
-                        </h1>
-                        <NoteListSorterButton
-                            descending={sortOrder === 'des' ? descending : null}
-                            onClick={handleShortOrder}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-5 overflow-y-auto">
-                        <NoteListItem
-                            active
-                            title="Reflection on the Month of June"
-                            body="It's hard to believe that June is already over! Looking back on the month, there were a few highlights that stand out to me."
-                            date={new Date()}
-                        />
-                    </div>
-                </>
-            ) : (
-                <NoteListEmpty />
-            )}
+            <div className="flex flex-row justify-between mx-4 mt-5 mb-2">
+                <h1 className="text-2xl font-medium text-white">{groupSource?.groupName}</h1>
+                <NoteListSorterButton onClick={handleSortOrder} descending={sortOrder === 'desc'} />
+            </div>
             {/* <div className="flex flex-row justify-between mx-4 mt-5 mb-2">
                 <h1 className="text-2xl font-medium text-white">Personal</h1>
                 <NoteListSorterButton />

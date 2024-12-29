@@ -4,15 +4,19 @@ import FolderComponent from './SidebarFolder/FolderSection/FolderComponent';
 import MoreComponent from './SidebarFolder/MoreSection/MoreComponent';
 
 export default function Sidebar({
+    handleCreateNote,
+    handleSearchNote,
     selectedGroupId,
     handleSelectGroupClick,
-    handleCreateNote,
     handleCreateGroup,
     groups,
 }) {
     return (
         <div className="flex flex-col">
-            <HeaderComponent handleCreateNote={handleCreateNote} />
+            <HeaderComponent
+                handleCreateNote={handleCreateNote}
+                handleSearchNote={handleSearchNote}
+            />
             <RecentComponent groups={groups} />
             <FolderComponent
                 groups={groups}

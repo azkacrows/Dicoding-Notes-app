@@ -16,7 +16,6 @@ import {
     moveNoteBetweenGroups,
     deleteGroup,
     displayRecentNotes,
-    displaySearchedNotes,
     addNoteToArchived,
     addNoteToFavorites,
 } from '../utils/logic';
@@ -28,7 +27,6 @@ export default function NoteApp() {
     const [notes, setNotes] = useState(defaultGroup[0].groupContent);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
     const [searchedNotes, setSearchedNotes] = useState(null);
-    const [searchQuery, setSearchQuery] = useState('');
 
     // FINISHED Selected Group
     useEffect(() => {
@@ -37,7 +35,6 @@ export default function NoteApp() {
             if (selectedGroup) {
                 setNotes(selectedGroup.groupContent);
                 setSearchedNotes(null);
-                setSearchQuery('');
             }
         }
     }, [selectedGroupId, groups]);
@@ -75,14 +72,10 @@ export default function NoteApp() {
 
     // TODO Searched Note
     function handleSearchNote(query) {
-        setSearchQuery(query);
-
-        if (query.trim() === '') {
-            setSearchedNotes(null);
-        } else {
-            const results = displaySearchedNotes(notes, query);
-            setSearchedNotes(results);
-        }
+        const filteredNotes = notes.filter((note) =>
+            note.title.toLowerCase().includes(query.toLowerCase())
+        );
+        setSearchedNotes(filteredNotes);
     }
 
     return (
@@ -92,6 +85,7 @@ export default function NoteApp() {
                 <div className="flex flex-col w-1/2 h-screen">
                     <Sidebar
                         handleCreateNote={handleCreateNote}
+                        handleSearchNote={handleSearchNote}
                         groups={groups}
                         handleCreateGroup={handleCreateGroup}
                         selectedGroupId={selectedGroupId}
