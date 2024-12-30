@@ -84,11 +84,13 @@ export default function NoteApp() {
                 {/* Sidebar Panel */}
                 <div className="flex flex-col w-1/2 h-screen">
                     <Sidebar
+                        selectedNoteId={selectedNoteId}
+                        handleSelectNoteClick={handleSelectNoteClick}
                         handleCreateNote={handleCreateNote}
                         handleSearchNote={handleSearchNote}
                         groups={groups}
-                        handleCreateGroup={handleCreateGroup}
                         selectedGroupId={selectedGroupId}
+                        handleCreateGroup={handleCreateGroup}
                         handleSelectGroupClick={handleSelectGroupClick}
                     />
                 </div>

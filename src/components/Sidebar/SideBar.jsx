@@ -4,6 +4,8 @@ import FolderComponent from './SidebarFolder/FolderSection/FolderComponent';
 import MoreComponent from './SidebarFolder/MoreSection/MoreComponent';
 
 export default function Sidebar({
+    selectedNoteId,
+    handleSelectNoteClick,
     handleCreateNote,
     handleSearchNote,
     selectedGroupId,
@@ -17,7 +19,11 @@ export default function Sidebar({
                 handleCreateNote={handleCreateNote}
                 handleSearchNote={handleSearchNote}
             />
-            <RecentComponent groups={groups} />
+            <RecentComponent
+                groups={groups}
+                handleSelectNoteClick={handleSelectNoteClick}
+                selectedNoteId={selectedNoteId}
+            />
             <FolderComponent
                 groups={groups}
                 selectedGroupId={selectedGroupId}

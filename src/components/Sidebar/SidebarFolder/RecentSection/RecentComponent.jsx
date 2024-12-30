@@ -1,6 +1,6 @@
 import RecentNotesButton from './RecentNotesButton';
 
-export default function RecentComponent({ groups }) {
+export default function RecentComponent({ selectedNoteId, handleSelectNoteClick, groups }) {
     return (
         <div className="flex flex-col w-full h-[9.5rem]">
             <p className="mx-4 mb-2 text-primary-content">Recents</p>
@@ -10,7 +10,7 @@ export default function RecentComponent({ groups }) {
                         key={index}
                         title={note.title}
                         onClick={() => handleSelectNoteClick(note.id)}
-                        recentActive={note.id === activeNoteId}
+                        recentActive={note.id === selectedNoteId}
                     />
                 ))}
             </div>
