@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-export default function MyCard({ active, title, date, body }) {
+export default function MyCard({ active, title, body, date, onClick }) {
     const activeCard = active ? '!bg-primary/80' : '';
     const cardFullDate = new Date(date).toLocaleDateString('id-ID', {
         weekday: 'long',
@@ -10,6 +10,8 @@ export default function MyCard({ active, title, date, body }) {
     return (
         <div
             className={`card w-auto bg-base-300/40 shadow-2xl ml-4 mr-2 max-h-32 rounded-sm hover:cursor-pointer ${activeCard}`}
+            role="button"
+            onClick={onClick}
         >
             <div className="w-full gap-1 p-3 card-body">
                 <h2 className="text-lg text-white card-title line-clamp-1">{title}</h2>
