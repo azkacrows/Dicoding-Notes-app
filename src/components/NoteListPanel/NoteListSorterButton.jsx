@@ -1,8 +1,8 @@
-export default function NoteListSorterButton({ descending, handleSortOrder }) {
+export default function NoteListSorterButton({ descending, onClick }) {
     let icon = descending ? 'chevrons-up' : 'chevrons-down';
     return (
         <button
-            onClick={handleSortOrder}
+            onClick={onClick}
             className="flex items-center cursor-pointer fill-current opacity-60 active:opacity-30"
             type="button"
         >
