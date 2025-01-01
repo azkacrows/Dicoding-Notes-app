@@ -29,7 +29,8 @@ export default function NoteApp() {
     const [searchedNotes, setSearchedNotes] = useState(null);
 
     // FINISHED Selected Group
-    useEffect(() => {
+    function handleSelectGroupClick(groupId) {
+        setSelectedGroupId(groupId);
         if (selectedGroupId) {
             const selectedGroup = groups.find((group) => group.groupId === selectedGroupId);
             if (selectedGroup) {
@@ -37,10 +38,6 @@ export default function NoteApp() {
                 setSearchedNotes(null);
             }
         }
-    }, [selectedGroupId, groups]);
-
-    function handleSelectGroupClick(groupId) {
-        setSelectedGroupId(groupId);
     }
 
     // FINISHED create Groups
