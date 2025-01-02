@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // fragmet
 import Sidebar from './Sidebar/SideBar';
@@ -23,35 +23,64 @@ import {
 export default function NoteApp() {
     // state
     const [groups, setGroups] = useState(defaultGroup);
-    const [selectedGroupId, setSelectedGroupId] = useState(10);
-    const [notes, setNotes] = useState(defaultGroup[0].groupContent);
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
+    const [notes, setNotes] = useState([]);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
     const [searchedNotes, setSearchedNotes] = useState(null);
 
-    // FINISHED Selected Group
+    // TODO Selected Group
     function handleSelectGroupClick(groupId) {
         setSelectedGroupId(groupId);
-        if (selectedGroupId) {
-            const selectedGroup = groups.find((group) => group.groupId === selectedGroupId);
-            if (selectedGroup) {
-                setNotes(selectedGroup.groupContent);
-                setSearchedNotes(null);
-            }
+        const selectedGroup = groups.find((group) => group.groupId === groupId);
+        if (selectedGroup) {
+            setNotes(selectedGroup.groupContent);
+            setSearchedNotes(null);
         }
     }
 
-    // FINISHED create Groups
-    function handleCreateGroup(groupName) {
-        const newGroup = createGroup(groups, groupName);
+    // TODO create Groups
+    function handleCreateGroup() {
+        const groupName = prompt('Masukkan nama folder baru');
+        const newGroup = createGroup(groupName, groups);
         setGroups(newGroup);
         setSelectedGroupId(newGroup[newGroup.length - 1].groupId); // Pilih group baru secara otomatis
+        setNotes(newGroup[newGroup.length - 1].groupContent);
     }
 
-    // FINISHED create notes
+    // TODO create notes
     function handleCreateNote(title, body) {
-        const newNote = createNote(title, body);
-        setNotes([...notes, newNote]);
-        setSelectedNoteId(newNote.id); // Pilih note baru secara otomatis
+        const nonCreatableNoteInGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
+        if (!selectedGroupId) {
+            const createGroupConfirm = confirm(
+                'Anda belum memilih folder, ingin membuat folder baru?'
+            );
+            if (createGroupConfirm) {
+                handleCreateGroup();
+            }
+        } else if (
+            nonCreatableNoteInGroups.includes(
+                groups.find((group) => group.groupId === selectedGroupId).groupName
+            )
+        ) {
+            alert('Anda tidak dapat membuat note di folder ini');
+        } else {
+            const createNoteTitle = prompt('Masukkan judul note baru');
+            const newNote = createNote(createNoteTitle, body);
+            const updatedGroups = groups.map((group) => {
+                if (group.groupId === selectedGroupId) {
+                    return {
+                        ...group,
+                        groupContent: [...group.groupContent, newNote],
+                    };
+                }
+                return group;
+            });
+            setGroups(updatedGroups);
+            setSelectedNoteId(newNote.id);
+            setNotes((prevNotes) => {
+                return [...prevNotes, newNote];
+            });
+        }
     }
 
     // TODO Selected Note
@@ -69,10 +98,17 @@ export default function NoteApp() {
 
     // TODO Searched Note
     function handleSearchNote(query) {
-        const filteredNotes = notes.filter((note) =>
-            note.title.toLowerCase().includes(query.toLowerCase())
-        );
-        setSearchedNotes(filteredNotes);
+        if (query.trim() === '') {
+            setSearchedNotes(null);
+        } else {
+            const allNotes = groups.flatMap((group) => group.groupContent);
+            const filteredNotes = allNotes.filter(
+                (note) =>
+                    note.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
+                    note.body.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+            );
+            setSearchedNotes(filteredNotes);
+        }
     }
 
     return (
@@ -94,7 +130,8 @@ export default function NoteApp() {
                 {/* Note List Panel */}
                 <div className="flex flex-col w-1/2 h-screen bg-base-200">
                     <NoteListPanel
-                        notes={notes || searchedNotes}
+                        notes={searchedNotes || notes}
+                        searchedNotes={searchedNotes}
                         selectedNoteId={selectedNoteId}
                         handleSelectNoteClick={handleSelectNoteClick}
                         groups={groups}
@@ -104,7 +141,7 @@ export default function NoteApp() {
             </div>
             {/* Main Editor Panel */}
             <div className="flex flex-col items-center w-3/5 h-screen">
-                <NoteMainEditor />
+                <NoteMainEditor notes={notes.find((note) => note.id === selectedNoteId)} />
             </div>
         </div>
     );

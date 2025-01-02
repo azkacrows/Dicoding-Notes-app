@@ -38,7 +38,9 @@ export default function NoteListPanel({
     return (
         <div className="flex flex-col w-full h-full">
             <div className="flex flex-row justify-between mx-4 mt-5 mb-2">
-                <h1 className="text-2xl font-medium text-white">{groupSource?.groupName}</h1>
+                <h1 className="text-2xl font-medium text-white">
+                    {searchedNotes ? 'Search..' : groupSource?.groupName}
+                </h1>
                 <NoteListSorterButton onClick={handleSortOrder} descending={sortOrder === 'des'} />
             </div>
             {notesToDisplay().length > 0 ? (

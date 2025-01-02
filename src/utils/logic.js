@@ -14,7 +14,7 @@ const defaultGroup = [
 const createNote = (title, body) => {
     return {
         id: +new Date(),
-        title: 'Undefined',
+        title: title || 'Undefined',
         body,
         createdAt: new Date().toISOString(),
         archived: false,
@@ -52,8 +52,11 @@ const deleteNote = (groups, groupId, noteId) => {
 };
 
 // create group
-const createGroup = (groups, groupName) => {
-    return [...groups, { groupId: +new Date(), groupName: 'Undefined', groupContent: [] }];
+const createGroup = (groupName, groups) => {
+    return [
+        ...groups,
+        { groupId: +new Date(), groupName: groupName || 'Undefined', groupContent: [] },
+    ];
 };
 
 // edit group

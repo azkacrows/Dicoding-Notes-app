@@ -5,7 +5,7 @@ import NoteWSIWYGEditor from './NoteToolbar/NoteWSIWYG/NoteWSIWYGEditor';
 import NoteBoardEditor from './NoteToolbar/NoteBoard/NoteBoardEditor';
 import NoOpenedNotes from './NoOpenedNotes';
 
-export default function NoteMainEditor() {
+export default function NoteMainEditor({ notes, selectedNoteId }) {
     return (
         <div className="flex flex-col w-full h-full p-2">
             <NoOpenedNotes />
