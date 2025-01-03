@@ -141,7 +141,12 @@ export default function NoteApp() {
             </div>
             {/* Main Editor Panel */}
             <div className="flex flex-col items-center w-3/5 h-screen">
-                <NoteMainEditor notes={notes.find((note) => note.id === selectedNoteId)} />
+                <NoteMainEditor
+                    notes={notes}
+                    selectedNoteId={selectedNoteId}
+                    groups={groups}
+                    selectedGroupId={selectedGroupId}
+                />
             </div>
         </div>
     );
