@@ -1,5 +1,4 @@
 Main.jsx
-  Logic.js
   NoteApp.jsx
     Sidebar
       HeaderComponent.jsx

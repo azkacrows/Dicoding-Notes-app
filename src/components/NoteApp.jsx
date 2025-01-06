@@ -1,32 +1,41 @@
 import { useState } from 'react';
 
+// utils
+import { getInitialData } from '../utils';
+
 // fragmet
 import Sidebar from './Sidebar/SideBar';
 import NoteListPanel from './NoteListPanel/NoteListPanel';
-import NoteMainEditor from './NoteEditorPanel/NoteMainEditor';
-
-// utils
-import {
-    defaultGroup,
-    createNote,
-    editNote,
-    deleteNote,
-    createGroup,
-    editGroup,
-    moveNoteBetweenGroups,
-    deleteGroup,
-    displayRecentNotes,
-    addNoteToArchived,
-    addNoteToFavorites,
-} from '../utils/logic';
+import NoteMainEditor from './NoteBoardPanel/NoteMainEditor';
 
 export default function NoteApp() {
+    // Grup default
+    const defaultGroup = [
+        { groupId: 10, groupName: 'Default', groupContent: getInitialData() },
+        { groupId: 20, groupName: 'Favorites', groupContent: [] },
+        { groupId: 30, groupName: 'Archived Notes', groupContent: [] },
+        { groupId: 40, groupName: 'Trash', groupContent: [] },
+        { groupId: 50, groupName: 'Recents', groupContent: [] },
+    ];
+
     // state
     const [groups, setGroups] = useState(defaultGroup);
     const [selectedGroupId, setSelectedGroupId] = useState(null);
     const [notes, setNotes] = useState([]);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
     const [searchedNotes, setSearchedNotes] = useState(null);
+
+    // TODO create Groups
+    function handleCreateGroup() {
+        const groupName = prompt('Masukkan nama folder baru');
+        const newGroup = [
+            ...groups,
+            { groupId: +new Date(), groupName: groupName || 'Undefined', groupContent: [] },
+        ];
+        setGroups(newGroup);
+        setSelectedGroupId(newGroup[newGroup.length - 1].groupId); // Pilih group baru secara otomatis
+        setNotes(newGroup[newGroup.length - 1].groupContent);
+    }
 
     // TODO Selected Group
     function handleSelectGroupClick(groupId) {
@@ -38,17 +47,65 @@ export default function NoteApp() {
         }
     }
 
-    // TODO create Groups
-    function handleCreateGroup() {
-        const groupName = prompt('Masukkan nama folder baru');
-        const newGroup = createGroup(groupName, groups);
-        setGroups(newGroup);
-        setSelectedGroupId(newGroup[newGroup.length - 1].groupId); // Pilih group baru secara otomatis
-        setNotes(newGroup[newGroup.length - 1].groupContent);
-    }
+    // TODO moved notes between group
+    const handleMoveNoteBetweenGroups = (groups, sourceGroupId, targetGroupId, noteId) => {
+        let noteToMove = null;
+        const updatedGroups = groups.map((group) => {
+            if (group.groupId === sourceGroupId) {
+                noteToMove = group.groupContent.find((note) => note.id === noteId);
+                return {
+                    ...group,
+                    groupContent: group.groupContent.filter((note) => note.id !== noteId),
+                };
+            }
+            return group;
+        });
+
+        return updatedGroups.map((group) => {
+            if (group.groupId === targetGroupId && noteToMove) {
+                return {
+                    ...group,
+                    groupContent: [...group.groupContent, noteToMove],
+                };
+            }
+            return group;
+        });
+    };
+
+    // TODO adding notes to archived array
+    const handleAddNoteToArchived = (groups, noteId) => {
+        return handleMoveNoteBetweenGroups(groups, 10, 30, noteId); // Default to Archived Notes
+    };
+
+    // TODO adding notes to favorite array
+    const handleAddNoteToFavorites = (groups, noteId) => {
+        return handleMoveNoteBetweenGroups(groups, 10, 20, noteId); // Default to Favorites
+    };
+
+    // TODO delete group
+    const handleDeleteGroup = (groups, groupId) => {
+        const nonDeletableGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
+        const groupToDelete = groups.find((group) => group.groupId === groupId);
+        if (groupToDelete && !nonDeletableGroups.includes(groupToDelete.groupName)) {
+            const notesToTrash = groupToDelete.groupContent;
+
+            return groups
+                .filter((group) => group.groupId !== groupId)
+                .map((group) => {
+                    if (group.groupName === 'Trash') {
+                        return {
+                            ...group,
+                            groupContent: [...group.groupContent, ...notesToTrash],
+                        };
+                    }
+                    return group;
+                });
+        }
+        return groups;
+    };
 
     // TODO create notes
-    function handleCreateNote(title, body) {
+    function handleCreateNote() {
         const nonCreatableNoteInGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
         if (!selectedGroupId) {
             const createGroupConfirm = confirm(
@@ -65,7 +122,13 @@ export default function NoteApp() {
             alert('Anda tidak dapat membuat note di folder ini');
         } else {
             const createNoteTitle = prompt('Masukkan judul note baru');
-            const newNote = createNote(createNoteTitle, body);
+            const newNote = {
+                id: +new Date(),
+                title: createNoteTitle || 'Undefined',
+                body,
+                createdAt: new Date().toISOString(),
+                archived: false,
+            };
             const updatedGroups = groups.map((group) => {
                 if (group.groupId === selectedGroupId) {
                     return {
@@ -91,10 +154,71 @@ export default function NoteApp() {
 
         if (selectedNote) {
             // Update grup Recents dengan note yang diakses
-            const updatedGroups = displayRecentNotes(groups, selectedNote);
+            const updatedGroups = handleDisplayRecentNotes(groups, selectedNote);
             setGroups(updatedGroups);
         }
     }
+
+    // TODO edit notes
+    function handleEditNote(noteId, updatedData) {
+        const updatedGroups = groups.map((group) => {
+            if (group.groupId === selectedGroupId) {
+                return {
+                    ...group,
+                    groupContent: group.groupContent.map((note) =>
+                        note.id === noteId ? { ...note, ...updatedData } : note
+                    ),
+                };
+            }
+            return group;
+        });
+
+        setGroups(updatedGroups);
+        setNotes((prevNotes) =>
+            prevNotes.map((note) => (note.id === noteId ? { ...note, ...updatedData } : note))
+        );
+    }
+
+    // TODO delete notes
+    const handleDeleteNote = (groups, groupId, noteId) => {
+        let noteToTrash = null;
+        const updatedGroups = groups.map((group) => {
+            if (group.groupId === groupId) {
+                noteToTrash = group.groupContent.find((note) => note.id === noteId);
+                return {
+                    ...group,
+                    groupContent: group.groupContent.filter((note) => note.id !== noteId),
+                };
+            }
+            return group;
+        });
+
+        return updatedGroups.map((group) => {
+            if (group.groupName === 'Trash' && noteToTrash) {
+                return {
+                    ...group,
+                    groupContent: [...group.groupContent, noteToTrash],
+                };
+            }
+            return group;
+        });
+    };
+
+    // TODO display recently opened notes
+    const handleDisplayRecentNotes = (groups, note) => {
+        const recentGroup = groups.find((group) => group.groupName === 'Recents');
+        if (recentGroup) {
+            const updatedRecents = [
+                { ...note, accessedAt: new Date().toISOString() },
+                ...recentGroup.groupContent.filter((n) => n.id !== note.id),
+            ].slice(0, 3);
+
+            return groups.map((group) =>
+                group.groupName === 'Recents' ? { ...group, groupContent: updatedRecents } : group
+            );
+        }
+        return groups;
+    };
 
     // TODO Searched Note
     function handleSearchNote(query) {
@@ -110,7 +234,6 @@ export default function NoteApp() {
             setSearchedNotes(filteredNotes);
         }
     }
-
     return (
         <div className="container flex min-w-full min-h-screen">
             <div className="flex flex-row w-2/5">
