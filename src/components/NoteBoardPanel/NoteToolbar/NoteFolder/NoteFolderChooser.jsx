@@ -3,9 +3,9 @@ export default function NoteListSorterButton({ descending, onClick }) {
     return (
         <div className="dropdown dropdown-bottom dropdown-end">
             <div
-                tabindex="0"
+                tabIndex={0}
                 role="button"
-                class="btn min-h-fit flex items-center h-0 m-0 p-0 bg-transparent hover:bg-transparent border-0 active:opacity-30"
+                className="btn min-h-fit flex items-center h-0 m-0 p-0 bg-transparent hover:bg-transparent border-0 active:opacity-30"
             >
                 <box-icon name={icon}></box-icon>
             </div>

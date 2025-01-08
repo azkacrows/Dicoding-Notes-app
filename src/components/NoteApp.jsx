@@ -125,7 +125,7 @@ export default function NoteApp() {
             const newNote = {
                 id: +new Date(),
                 title: createNoteTitle || 'Undefined',
-                body,
+                body: null,
                 createdAt: new Date().toISOString(),
                 archived: false,
             };
@@ -267,6 +267,7 @@ export default function NoteApp() {
                 <NoteMainEditor
                     notes={notes}
                     selectedNoteId={selectedNoteId}
+                    handleEditNote={handleEditNote}
                     groups={groups}
                     selectedGroupId={selectedGroupId}
                 />

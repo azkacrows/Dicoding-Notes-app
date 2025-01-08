@@ -6,7 +6,7 @@ export default function NoteFolderEditor({ groups, selectedGroupId }) {
         <div className="flex flex-row items-center fill-current">
             <box-icon name="folder"></box-icon>
             <p className="ml-4">Folder</p>
-            <span className="ml-12 text-white underline underline-offset-2">{groupName}</span>
+            <span className="ml-12 text-white underline underline-offset-4">{groupName}</span>
             <NoteFolderChooser />
         </div>
     );

@@ -1,4 +1,13 @@
 export default function NoteHeaderButton() {
+    // // TODO adding notes to archived array
+    // const handleAddNoteToArchived = (groups, noteId) => {
+    //     return handleMoveNoteBetweenGroups(groups, 10, 30, noteId); // Default to Archived Notes
+    // };
+
+    // // TODO adding notes to favorite array
+    // const handleAddNoteToFavorites = (groups, noteId) => {
+    //     return handleMoveNoteBetweenGroups(groups, 10, 20, noteId); // Default to Favorites
+    // };
     return (
         <div className="border rounded-full dropdown dropdown-end border-white/60">
             <div
