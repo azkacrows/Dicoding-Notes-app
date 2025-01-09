@@ -14,49 +14,14 @@ export default function NoteMainEditor({
     groups,
     selectedGroupId,
 }) {
-    const selectedNotes = notes.find((note) => note.id === selectedNoteId) || null;
-    // local state
-    const [editedData, setEditedData] = useState({
-        title: selectedNotes.title,
-        body: selectedNotes.body,
-    });
-
-    if (
-        selectedNotes &&
-        (editedData.title !== selectedNotes.title || editedData.body !== selectedNotes.body)
-    ) {
-        setEditedData({
-            title: selectedNotes.title,
-            body: selectedNotes.body,
-        });
-    }
-
-    function dataChangeHandler(event) {
-        const { name, value } = event.target;
-        setEditedData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    }
-
-    function saveEditedDataHandler() {
-        handleEditNote(selectedNoteId, editedData);
-    }
+    let selectedNotes = notes.find((note) => note.id == selectedNoteId);
     return (
         <div className="flex flex-col w-full h-full p-2">
             {!selectedNotes ? (
                 <NoOpenedNotes />
             ) : (
                 <div className="flex flex-col w-full h-full px-8 py-2">
-                    <NoteHeader
-                        title={selectedNotes.title}
-                        onChange={(e) =>
-                            dataChangeHandler({
-                                ...e,
-                                target: { name: 'title', value: e.target.value },
-                            })
-                        }
-                    />
+                    <NoteHeader title={selectedNotes.title} />
                     <div className="flex flex-col w-full h-full">
                         <NoteDateEditor date={selectedNotes.createdAt} />
                         <hr className="my-3" />
@@ -66,8 +31,7 @@ export default function NoteMainEditor({
 
                         <NoteWSIWYGEditor />
                         <hr className="mt-2 mb-3" />
-
-                        {/* <NoteBoardEditor body={selectedNotes.body} /> */}
+                        <NoteBoardEditor body={selectedNotes.body} />
                     </div>
                 </div>
             )}

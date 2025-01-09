@@ -1,6 +1,7 @@
 import NoteHeaderButton from './NoteHeaderButton';
 
-export default function NoteHeader({ title, onChange }) {
+export default function NoteHeader({ title, onChange, saveEditedDataHandler }) {
+    console.log(title);
     return (
         <div className="flex flex-row items-center justify-between">
             <input
@@ -8,9 +9,9 @@ export default function NoteHeader({ title, onChange }) {
                 value={title}
                 onChange={onChange}
                 type="text"
-                className="text-2xl font-bold text-white"
+                className="text-2xl font-bold text-white bg-transparent border-none focus:outline-none"
             />
-            <NoteHeaderButton />
+            <NoteHeaderButton saveEditedDataHandler={saveEditedDataHandler} />
         </div>
     );
 }
