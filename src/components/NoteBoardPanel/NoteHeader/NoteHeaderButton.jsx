@@ -1,10 +1,10 @@
-export default function NoteHeaderButton() {
-    // // TODO adding notes to archived array
+export default function NoteHeaderButton({ saveEditedDataHandler }) {
+    // TODO adding notes to archived array
     // const handleAddNoteToArchived = (groups, noteId) => {
     //     return handleMoveNoteBetweenGroups(groups, 10, 30, noteId); // Default to Archived Notes
     // };
 
-    // // TODO adding notes to favorite array
+    // TODO adding notes to favorite array
     // const handleAddNoteToFavorites = (groups, noteId) => {
     //     return handleMoveNoteBetweenGroups(groups, 10, 20, noteId); // Default to Favorites
     // };
@@ -22,9 +22,9 @@ export default function NoteHeaderButton() {
                 className="dropdown-content menu bg-base-300 rounded-lg z-[1] w-52 p-2 shadow"
             >
                 <li className="active:opacity-30">
-                    <a>Save Notes</a>
+                    <button onClick={saveEditedDataHandler}>Save Notes</button>
                 </li>
-                <li className="active:opacity-30">
+                {/* <li className="active:opacity-30">
                     <a>Delete Notes</a>
                 </li>
                 <li className="active:opacity-30">
@@ -35,7 +35,7 @@ export default function NoteHeaderButton() {
                 </li>
                 <li className="active:opacity-30">
                     <a>Delete Folder</a>
-                </li>
+                </li> */}
             </ul>
         </div>
     );

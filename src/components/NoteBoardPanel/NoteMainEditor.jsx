@@ -14,14 +14,26 @@ export default function NoteMainEditor({
     groups,
     selectedGroupId,
 }) {
-    let selectedNotes = notes.find((note) => note.id == selectedNoteId);
+    const selectedNotes = notes.find((note) => note.id == selectedNoteId);
+
+    let [editedData, setEditedData] = useState({
+        title: null,
+        body: null,
+    });
+
+    function saveEditedDataHandler() {
+        handleEditNote(selectedNoteId, editedData);
+    }
+
     return (
         <div className="flex flex-col w-full h-full p-2">
-            {!selectedNotes ? (
-                <NoOpenedNotes />
-            ) : (
+            {selectedNotes ? (
                 <div className="flex flex-col w-full h-full px-8 py-2">
-                    <NoteHeader title={selectedNotes.title} />
+                    <NoteHeader
+                        title={editedData.title ?? selectedNotes.title}
+                        onChange={(e) => setEditedData({ ...editedData, title: e.target.value })}
+                        saveEditedDataHandler={saveEditedDataHandler}
+                    />
                     <div className="flex flex-col w-full h-full">
                         <NoteDateEditor date={selectedNotes.createdAt} />
                         <hr className="my-3" />
@@ -34,6 +46,8 @@ export default function NoteMainEditor({
                         <NoteBoardEditor body={selectedNotes.body} />
                     </div>
                 </div>
+            ) : (
+                <NoOpenedNotes />
             )}
         </div>
     );

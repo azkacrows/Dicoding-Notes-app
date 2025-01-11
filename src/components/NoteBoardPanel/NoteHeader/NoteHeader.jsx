@@ -1,7 +1,6 @@
 import NoteHeaderButton from './NoteHeaderButton';
 
 export default function NoteHeader({ title, onChange, saveEditedDataHandler }) {
-    console.log(title);
     return (
         <div className="flex flex-row items-center justify-between">
             <input
