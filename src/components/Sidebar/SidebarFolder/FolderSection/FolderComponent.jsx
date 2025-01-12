@@ -13,7 +13,7 @@ export default function FolderComponent({
                 <p>Folders</p>
                 <CreateFolderButton handleCreateGroup={handleCreateGroup} />
             </div>
-            <div className="lg:max-2xl:h-[7.5rem] h-[4.8rem] overflow-y-auto">
+            <div className="lg:max-2xl:max-h-[7.5rem] h-auto overflow-y-auto">
                 {[...groups]
                     .filter(
                         (group) =>

@@ -16,13 +16,25 @@ export default function NoteMainEditor({
 }) {
     const selectedNotes = notes.find((note) => note.id == selectedNoteId);
 
-    let [editedData, setEditedData] = useState({
+    let [editedDataTitle, setEditedDataTitle] = useState({
         title: null,
+    });
+    let [editedDataBody, setEditedDataBody] = useState({
         body: null,
     });
 
     function saveEditedDataHandler() {
-        handleEditNote(selectedNoteId, editedData);
+        let titleEdited = editedDataTitle;
+        let bodyEdited = editedDataBody;
+        let bothEdited = titleEdited && bodyEdited;
+
+        if (titleEdited) {
+            handleEditNote(selectedNoteId, titleEdited);
+        } else if (bodyEdited) {
+            handleEditNote(selectedNoteId, bodyEdited);
+        } else {
+            handleEditNote(selectedNoteId, bothEdited);
+        }
     }
 
     return (
@@ -30,8 +42,8 @@ export default function NoteMainEditor({
             {selectedNotes ? (
                 <div className="flex flex-col w-full h-full px-8 py-2">
                     <NoteHeader
-                        title={editedData.title ?? selectedNotes.title}
-                        onChange={(e) => setEditedData({ ...editedData, title: e.target.value })}
+                        title={editedDataTitle.title ?? selectedNotes.title}
+                        onChange={(e) => setEditedDataTitle({ title: e.target.value })}
                         saveEditedDataHandler={saveEditedDataHandler}
                     />
                     <div className="flex flex-col w-full h-full">
@@ -43,7 +55,10 @@ export default function NoteMainEditor({
 
                         <NoteWSIWYGEditor />
                         <hr className="mt-2 mb-3" />
-                        <NoteBoardEditor body={selectedNotes.body} />
+                        <NoteBoardEditor
+                            body={editedDataBody.body ?? selectedNotes.body}
+                            onChange={(e) => setEditedDataBody({ body: e.target.value })}
+                        />
                     </div>
                 </div>
             ) : (

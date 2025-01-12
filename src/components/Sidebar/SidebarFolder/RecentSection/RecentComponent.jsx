@@ -2,7 +2,7 @@ import RecentNotesButton from './RecentNotesButton';
 
 export default function RecentComponent({ selectedNoteId, handleSelectNoteClick, groups }) {
     return (
-        <div className="flex flex-col w-full h-[9.5rem]">
+        <div className="flex flex-col w-full max-h-[9.5rem] h-auto">
             <p className="mx-4 mb-2 text-primary-content">Recents</p>
             <div>
                 {groups[4].groupContent.map((note, index) => (
