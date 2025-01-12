@@ -139,7 +139,7 @@ export default function NoteApp() {
                 return group;
             });
             setGroups(updatedGroups);
-            setSelectedNoteId(newNote.id);
+            setSelectedNoteId(null);
             setNotes((prevNotes) => {
                 return [...prevNotes, newNote];
             });

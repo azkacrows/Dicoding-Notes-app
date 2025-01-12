@@ -14,7 +14,7 @@ export default function NoteMainEditor({
     groups,
     selectedGroupId,
 }) {
-    const selectedNotes = notes.find((note) => note.id == selectedNoteId);
+    const selectedNotes = notes.find((note) => note.id === selectedNoteId);
 
     let [editedDataTitle, setEditedDataTitle] = useState({
         title: null,
@@ -24,17 +24,13 @@ export default function NoteMainEditor({
     });
 
     function saveEditedDataHandler() {
-        let titleEdited = editedDataTitle;
-        let bodyEdited = editedDataBody;
-        let bothEdited = titleEdited && bodyEdited;
+        handleEditNote(selectedNoteId, {
+            title: editedDataTitle.title ?? selectedNotes.title,
+            body: editedDataBody.body ?? selectedNotes.body,
+        });
 
-        if (titleEdited) {
-            handleEditNote(selectedNoteId, titleEdited);
-        } else if (bodyEdited) {
-            handleEditNote(selectedNoteId, bodyEdited);
-        } else {
-            handleEditNote(selectedNoteId, bothEdited);
-        }
+        setEditedDataTitle({ title: null });
+        setEditedDataBody({ body: null });
     }
 
     return (
