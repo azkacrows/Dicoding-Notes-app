@@ -25,7 +25,7 @@ export default function NoteApp() {
     const [selectedNoteId, setSelectedNoteId] = useState(null);
     const [searchedNotes, setSearchedNotes] = useState(null);
 
-    // TODO create Groups
+    // FINISHED create Groups
     function handleCreateGroup() {
         const groupName = prompt('Masukkan nama folder baru');
         const newGroup = [
@@ -37,7 +37,7 @@ export default function NoteApp() {
         setNotes(newGroup[newGroup.length - 1].groupContent);
     }
 
-    // TODO Selected Group
+    // FINISHED Selected Group
     function handleSelectGroupClick(groupId) {
         setSelectedGroupId(groupId);
         const selectedGroup = groups.find((group) => group.groupId === groupId);
@@ -111,10 +111,9 @@ export default function NoteApp() {
         ) {
             alert('Anda tidak dapat membuat note di folder ini');
         } else {
-            const createNoteTitle = prompt('Masukkan judul note baru');
             const newNote = {
                 id: +new Date(),
-                title: createNoteTitle || 'Undefined',
+                title: 'Undefined',
                 body: null,
                 createdAt: new Date().toISOString(),
                 archived: false,
@@ -129,7 +128,7 @@ export default function NoteApp() {
                 return group;
             });
             setGroups(updatedGroups);
-            setSelectedNoteId(null);
+            setSelectedNoteId(newNote.id);
             setNotes((prevNotes) => {
                 return [...prevNotes, newNote];
             });
@@ -167,6 +166,7 @@ export default function NoteApp() {
         setNotes((prevNotes) =>
             prevNotes.map((note) => (note.id === noteId ? { ...note, ...updatedData } : note))
         );
+        setSelectedNoteId(null);
     }
 
     // TODO delete notes
