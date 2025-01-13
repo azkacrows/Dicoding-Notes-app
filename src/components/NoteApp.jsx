@@ -47,31 +47,6 @@ export default function NoteApp() {
         }
     }
 
-    // TODO moved notes between group
-    const handleMoveNoteBetweenGroups = (groups, sourceGroupId, targetGroupId, noteId) => {
-        let noteToMove = null;
-        const updatedGroups = groups.map((group) => {
-            if (group.groupId === sourceGroupId) {
-                noteToMove = group.groupContent.find((note) => note.id === noteId);
-                return {
-                    ...group,
-                    groupContent: group.groupContent.filter((note) => note.id !== noteId),
-                };
-            }
-            return group;
-        });
-
-        return updatedGroups.map((group) => {
-            if (group.groupId === targetGroupId && noteToMove) {
-                return {
-                    ...group,
-                    groupContent: [...group.groupContent, noteToMove],
-                };
-            }
-            return group;
-        });
-    };
-
     // TODO delete group
     const handleDeleteGroup = (groups, groupId) => {
         const nonDeletableGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
@@ -168,6 +143,31 @@ export default function NoteApp() {
         );
         setSelectedNoteId(null);
     }
+
+    // TODO moved notes between group
+    const handleMoveNoteBetweenGroups = (groups, sourceGroupId, targetGroupId, noteId) => {
+        let noteToMove = null;
+        const updatedGroups = groups.map((group) => {
+            if (group.groupId === sourceGroupId) {
+                noteToMove = group.groupContent.find((note) => note.id === noteId);
+                return {
+                    ...group,
+                    groupContent: group.groupContent.filter((note) => note.id !== noteId),
+                };
+            }
+            return group;
+        });
+
+        return updatedGroups.map((group) => {
+            if (group.groupId === targetGroupId && noteToMove) {
+                return {
+                    ...group,
+                    groupContent: [...group.groupContent, noteToMove],
+                };
+            }
+            return group;
+        });
+    };
 
     // TODO delete notes
     const handleDeleteNote = (groups, groupId, noteId) => {
