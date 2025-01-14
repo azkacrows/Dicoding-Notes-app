@@ -1,4 +1,4 @@
-export default function NoteHeaderButton({ saveEditedDataHandler }) {
+export default function NoteHeaderButton({ saveEditedDataHandler, deleteNoteHandler }) {
     return (
         <div className="border rounded-full dropdown dropdown-end border-white/60">
             <div
@@ -16,7 +16,7 @@ export default function NoteHeaderButton({ saveEditedDataHandler }) {
                     <button onClick={saveEditedDataHandler}>Save Notes</button>
                 </li>
                 <li className="active:opacity-30">
-                    <button onClick={saveEditedDataHandler}>Delete Notes</button>
+                    <button onClick={deleteNoteHandler}>Delete Notes</button>
                 </li>
                 {/*<li className="active:opacity-30">
                     <a>Favorites Notes</a>

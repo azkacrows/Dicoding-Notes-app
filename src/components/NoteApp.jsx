@@ -168,35 +168,13 @@ export default function NoteApp() {
             return group;
         });
         setGroups(finalGroups);
+        setSelectedGroupId(null);
+        setSelectedNoteId(null);
+        setNotes([]);
     }
 
-    // const handleMoveNoteBetweenGroups = (groups, sourceGroupId, targetGroupId, noteId) => {
-    //     let noteToMove = null;
-    //     const updatedGroups = groups.map((group) => {
-    //         if (group.groupId === sourceGroupId) {
-    //             noteToMove = group.groupContent.find((note) => note.id === noteId);
-    //             return {
-    //                 ...group,
-    //                 groupContent: group.groupContent.filter((note) => note.id !== noteId),
-    //             };
-    //         }
-    //         return group;
-    //     });
-
-    //     return updatedGroups.map((group) => {
-    //         if (group.groupId === targetGroupId && noteToMove) {
-    //             return {
-    //                 ...group,
-    //                 groupContent: [...group.groupContent, noteToMove],
-    //             };
-    //         }
-    //         return group;
-    //     });
-    // };
-
     // TODO delete notes
-
-    const handleDeleteNote = (groups, groupId, noteId) => {
+    const handlePermanentDeleteNote = (groups, groupId, noteId) => {
         let noteToTrash = null;
         const updatedGroups = groups.map((group) => {
             if (group.groupId === groupId) {
