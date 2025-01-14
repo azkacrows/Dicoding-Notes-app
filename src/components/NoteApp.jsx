@@ -69,7 +69,7 @@ export default function NoteApp() {
         return groups;
     };
 
-    // TODO create notes
+    // FINISHED create notes
     function handleCreateNote() {
         const nonCreatableNoteInGroups = ['Favorites', 'Trash', 'Recents', 'Archived Notes'];
         if (!selectedGroupId) {
@@ -110,7 +110,7 @@ export default function NoteApp() {
         }
     }
 
-    // TODO Selected Note
+    // FINISHED Selected Note
     function handleSelectNoteClick(noteId) {
         setSelectedNoteId(noteId);
 
@@ -123,7 +123,7 @@ export default function NoteApp() {
         }
     }
 
-    // TODO edit notes
+    // FINISHED edit notes
     function handleEditNote(noteId, updatedData) {
         const updatedGroups = groups.map((group) => {
             if (group.groupId === selectedGroupId) {
@@ -144,7 +144,7 @@ export default function NoteApp() {
         setSelectedNoteId(null);
     }
 
-    // TODO moved notes between group
+    // FINISHED moved notes between group
     function handleMoveNoteBetweenGroups(sourceGroupId, targetGroupId, noteId) {
         let noteToMove = null;
         const updatedGroups = groups.map((group) => {
@@ -198,7 +198,7 @@ export default function NoteApp() {
         });
     };
 
-    // TODO display recently opened notes
+    // FINISHED display recently opened notes
     const handleDisplayRecentNotes = (groups, note) => {
         const recentGroup = groups.find((group) => group.groupName === 'Recents');
         if (recentGroup) {
@@ -214,7 +214,7 @@ export default function NoteApp() {
         return groups;
     };
 
-    // TODO Searched Note
+    // FINISHED Searched Note
     function handleSearchNote(query) {
         if (query.trim() === '') {
             setSearchedNotes(null);
