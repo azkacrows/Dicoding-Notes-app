@@ -1,6 +1,6 @@
 import NoteHeaderButton from './NoteHeaderButton';
 
-export default function NoteHeader({ title, onChange, saveEditedDataHandler }) {
+export default function NoteHeader({ title, onChange, saveEditedDataHandler, deleteNoteHandler }) {
     return (
         <div className="flex flex-row items-center justify-between">
             <input
@@ -10,7 +10,10 @@ export default function NoteHeader({ title, onChange, saveEditedDataHandler }) {
                 type="text"
                 className="text-2xl font-bold text-white bg-transparent border-none focus:outline-none"
             />
-            <NoteHeaderButton saveEditedDataHandler={saveEditedDataHandler} />
+            <NoteHeaderButton
+                saveEditedDataHandler={saveEditedDataHandler}
+                deleteNoteHandler={deleteNoteHandler}
+            />
         </div>
     );
 }

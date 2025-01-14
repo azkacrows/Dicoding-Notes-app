@@ -13,7 +13,18 @@ export default function NoteMainEditor({
     handleEditNote,
     groups,
     selectedGroupId,
+    handleMoveNoteBetweenGroups,
 }) {
+    // TODO adding notes to archived array
+    // const handleAddNoteToArchived = (groups, noteId) => {
+    //     return handleMoveNoteBetweenGroups(groups, 10, 30, noteId); // Default to Archived Notes
+    // };
+
+    // TODO adding notes to favorite array
+    // const handleAddNoteToFavorites = (groups, noteId) => {
+    //     return handleMoveNoteBetweenGroups(groups, 10, 20, noteId); // Default to Favorites
+    // };
+
     const selectedNotes = notes.find((note) => note.id === selectedNoteId);
 
     let [editedDataTitle, setEditedDataTitle] = useState({
@@ -33,6 +44,10 @@ export default function NoteMainEditor({
         setEditedDataBody({ body: null });
     }
 
+    function deleteNoteHandler() {
+        handleMoveNoteBetweenGroups(selectedGroupId, 40, selectedNoteId);
+    }
+
     return (
         <div className="flex flex-col w-full h-full p-2">
             {selectedNotes ? (
@@ -41,6 +56,7 @@ export default function NoteMainEditor({
                         title={editedDataTitle.title ?? selectedNotes.title}
                         onChange={(e) => setEditedDataTitle({ title: e.target.value })}
                         saveEditedDataHandler={saveEditedDataHandler}
+                        deleteNoteHandler={deleteNoteHandler}
                     />
                     <div className="flex flex-col w-full h-full">
                         <NoteDateEditor date={selectedNotes.createdAt} />
