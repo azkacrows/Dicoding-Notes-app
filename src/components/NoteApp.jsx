@@ -251,7 +251,12 @@ export default function NoteApp() {
         if (query.trim() === '') {
             setSearchedNotes(null);
         } else {
-            const allNotes = groups.flatMap((group) => group.groupContent);
+            // const allNotes = groups.flatMap((group) => group.groupContent);
+
+            const allNotes = groups
+                .filter((group) => group.groupName !== 'Trash' && group.groupName !== 'Recents')
+                .flatMap((group) => group.groupContent);
+
             const filteredNotes = allNotes.filter(
                 (note) =>
                     note.title.toLowerCase().includes(query.toLowerCase()) ||
