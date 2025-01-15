@@ -172,6 +172,38 @@ export default function NoteApp() {
         setSelectedNoteId(null);
         setNotes([]);
     }
+    // FINISHED archiving notes
+    function handleArchiveNote(groupId, noteId) {
+        let noteToArchive = null;
+        const updatedGroups = groups.map((group) => {
+            if (group.groupId === groupId) {
+                noteToArchive = group.groupContent.find((note) => note.id === noteId);
+                return {
+                    ...group,
+                    groupContent: group.groupContent.filter((note) => note.id !== noteId),
+                };
+            }
+            return group;
+        });
+
+        const finalGroups = updatedGroups.map((group) => {
+            if (group.groupName === 'Archived Notes' && noteToArchive) {
+                noteToArchive = { ...noteToArchive, archived: true };
+                return {
+                    ...group,
+                    groupContent: [...group.groupContent, noteToArchive],
+                };
+            }
+            return group;
+        });
+
+        setGroups(finalGroups);
+        setSelectedGroupId(null);
+        setSelectedNoteId(null);
+        setNotes([]);
+
+        console.log('Note archived:', noteToArchive);
+    }
 
     // TODO delete notes
     const handlePermanentDeleteNote = (groups, groupId, noteId) => {
@@ -262,6 +294,7 @@ export default function NoteApp() {
                     notes={notes}
                     selectedNoteId={selectedNoteId}
                     handleEditNote={handleEditNote}
+                    handleArchiveNote={handleArchiveNote}
                     groups={groups}
                     selectedGroupId={selectedGroupId}
                     handleMoveNoteBetweenGroups={handleMoveNoteBetweenGroups}
