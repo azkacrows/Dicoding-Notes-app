@@ -254,10 +254,28 @@ export default function NoteApp() {
             const allNotes = groups.flatMap((group) => group.groupContent);
             const filteredNotes = allNotes.filter(
                 (note) =>
-                    note.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()) ||
-                    note.body.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+                    note.title.toLowerCase().includes(query.toLowerCase()) ||
+                    note.body.toLowerCase().includes(query.toLowerCase())
             );
             setSearchedNotes(filteredNotes);
+        }
+    }
+
+    function handleSearchedNoteClick(noteId) {
+        const foundNote = groups
+            .flatMap((group) =>
+                group.groupContent.map((note) => ({ ...note, groupId: group.groupId }))
+            )
+            .find((note) => note.id === noteId);
+
+        if (foundNote) {
+            setSelectedNoteId(noteId);
+            setSelectedGroupId(foundNote.groupId);
+            const sourceGroup = groups.find((group) => group.groupId === foundNote.groupId);
+            if (sourceGroup) {
+                setNotes(sourceGroup.groupContent);
+                setSearchedNotes(null);
+            }
         }
     }
     return (
@@ -282,7 +300,9 @@ export default function NoteApp() {
                         notes={searchedNotes || notes}
                         searchedNotes={searchedNotes}
                         selectedNoteId={selectedNoteId}
-                        handleSelectNoteClick={handleSelectNoteClick}
+                        handleSelectNoteClick={
+                            searchedNotes ? handleSearchedNoteClick : handleSelectNoteClick
+                        }
                         groups={groups}
                         selectedGroupId={selectedGroupId}
                     />
