@@ -201,8 +201,6 @@ export default function NoteApp() {
         setSelectedGroupId(null);
         setSelectedNoteId(null);
         setNotes([]);
-
-        console.log('Note archived:', noteToArchive);
     }
 
     // TODO delete notes
