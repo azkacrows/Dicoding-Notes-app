@@ -115,11 +115,27 @@ export default function NoteApp() {
         setSelectedNoteId(noteId);
 
         const selectedNote = notes.find((note) => note.id === noteId);
+        const selectedGroupName = groups.find(
+            (group) => group.groupId === selectedGroupId
+        )?.groupName;
 
         if (selectedNote) {
-            // Update grup Recents dengan note yang diakses
-            const updatedGroups = handleDisplayRecentNotes(groups, selectedNote);
-            setGroups(updatedGroups);
+            if (selectedGroupName === 'Recents' && selectedNote.sourceGroupName) {
+                const sourceGroup = groups.find(
+                    (group) => group.groupName === selectedNote.sourceGroupName
+                );
+                if (sourceGroup) {
+                    setSelectedGroupId(sourceGroup.groupId);
+                    setNotes(sourceGroup.groupContent);
+                }
+            } else {
+                const updatedGroups = handleDisplayRecentNotes(
+                    groups,
+                    selectedGroupName,
+                    selectedNote
+                );
+                setGroups(updatedGroups);
+            }
         }
     }
 
@@ -229,11 +245,11 @@ export default function NoteApp() {
     };
 
     // FINISHED display recently opened notes
-    const handleDisplayRecentNotes = (groups, note) => {
+    function handleDisplayRecentNotes(groups, sourceGroupName, note) {
         const recentGroup = groups.find((group) => group.groupName === 'Recents');
         if (recentGroup) {
             const updatedRecents = [
-                { ...note, accessedAt: new Date().toISOString() },
+                { ...note, accessedAt: new Date().toISOString(), sourceGroupName },
                 ...recentGroup.groupContent.filter((n) => n.id !== note.id),
             ].slice(0, 3);
 
@@ -242,7 +258,21 @@ export default function NoteApp() {
             );
         }
         return groups;
-    };
+    }
+    // const handleDisplayRecentNotes = (groups, note) => {
+    //     const recentGroup = groups.find((group) => group.groupName === 'Recents');
+    //     if (recentGroup) {
+    //         const updatedRecents = [
+    //             { ...note, accessedAt: new Date().toISOString() },
+    //             ...recentGroup.groupContent.filter((n) => n.id !== note.id),
+    //         ].slice(0, 3);
+
+    //         return groups.map((group) =>
+    //             group.groupName === 'Recents' ? { ...group, groupContent: updatedRecents } : group
+    //         );
+    //     }
+    //     return groups;
+    // };
 
     // FINISHED Searched Note
     function handleSearchNote(query) {
