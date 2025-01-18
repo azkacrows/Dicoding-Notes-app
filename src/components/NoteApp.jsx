@@ -41,7 +41,7 @@ export default function NoteApp() {
     function handleSelectGroupClick(groupId) {
         setSelectedGroupId(groupId);
         const selectedGroup = groups.find((group) => group.groupId === groupId);
-        if (selectedGroup) {
+        if (selectedGroup && selectedGroup.groupName !== 'Recents') {
             setNotes(selectedGroup.groupContent);
             setSearchedNotes(null);
         }
