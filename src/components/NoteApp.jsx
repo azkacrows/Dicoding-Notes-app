@@ -279,10 +279,10 @@ export default function NoteApp() {
         if (query.trim() === '') {
             setSearchedNotes(null);
         } else {
-            // const allNotes = groups.flatMap((group) => group.groupContent);
+            const excludedGroups = ['Trash', 'Recents'];
 
             const allNotes = groups
-                .filter((group) => group.groupName !== 'Trash' && group.groupName !== 'Recents')
+                .filter((group) => !excludedGroups.includes(group.groupName))
                 .flatMap((group) => group.groupContent);
 
             const filteredNotes = allNotes.filter(
