@@ -12,9 +12,11 @@ export default function NoteMainEditor({
     selectedNoteId,
     handleEditNote,
     handleArchiveNote,
+    handlePermanentDeleteNote,
     groups,
     selectedGroupId,
     handleMoveNoteBetweenGroups,
+    handleDeleteGroup,
 }) {
     const selectedNotes = notes.find((note) => note.id === selectedNoteId);
 
@@ -47,6 +49,20 @@ export default function NoteMainEditor({
         handleMoveNoteBetweenGroups(selectedGroupId, 40, selectedNoteId);
     }
 
+    function permanentDeleteNoteHandler() {
+        const confirmation = confirm(
+            'Apakah Anda yakin ingin menghapus catatan ini secara permanen? Catatan yang telah dihapus tidak dapat dikembalikan.'
+        );
+        if (confirmation) {
+            handlePermanentDeleteNote(selectedGroupId, selectedNoteId);
+        }
+    }
+
+    function deleteGroupHandler() {
+        const groupToDelete = groups.find((group) => group.groupId === selectedGroupId).groupId;
+        handleDeleteGroup(groupToDelete);
+    }
+
     return (
         <div className="flex flex-col w-full h-full p-2">
             {selectedNotes ? (
@@ -58,6 +74,8 @@ export default function NoteMainEditor({
                         deleteNoteHandler={deleteNoteHandler}
                         addNoteToFavoritesHandler={addNoteToFavoritesHandler}
                         archiveNoteHandler={archiveNoteHandler}
+                        permanentDeleteNoteHandler={permanentDeleteNoteHandler}
+                        deleteGroupHandler={deleteGroupHandler}
                     />
                     <div className="flex flex-col w-full h-full">
                         <NoteDateEditor date={selectedNotes.createdAt} />

@@ -3,6 +3,8 @@ export default function NoteHeaderButton({
     deleteNoteHandler,
     addNoteToFavoritesHandler,
     archiveNoteHandler,
+    permanentDeleteNoteHandler,
+    deleteGroupHandler,
 }) {
     return (
         <div className="border rounded-full dropdown dropdown-end border-white/60">
@@ -29,9 +31,12 @@ export default function NoteHeaderButton({
                 <li className="active:opacity-30">
                     <button onClick={archiveNoteHandler}>Archived Notes</button>
                 </li>
-                {/* <li className="active:opacity-30">
-                    <a>Delete Folder</a>
-                </li> */}
+                <li className="active:opacity-30">
+                    <button onClick={permanentDeleteNoteHandler}>Permanent Delete Notes</button>
+                </li>
+                <li className="active:opacity-30">
+                    <button onClick={deleteGroupHandler}>Delete Folder</button>
+                </li>
             </ul>
         </div>
     );

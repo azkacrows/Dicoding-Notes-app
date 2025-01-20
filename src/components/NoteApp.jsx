@@ -219,12 +219,10 @@ export default function NoteApp() {
         setNotes([]);
     }
 
-    // TODO delete notes
-    const handlePermanentDeleteNote = (groups, groupId, noteId) => {
-        let noteToTrash = null;
+    // FINISHED delete notes permanently
+    function handlePermanentDeleteNote(groupId, noteId) {
         const updatedGroups = groups.map((group) => {
             if (group.groupId === groupId) {
-                noteToTrash = group.groupContent.find((note) => note.id === noteId);
                 return {
                     ...group,
                     groupContent: group.groupContent.filter((note) => note.id !== noteId),
@@ -233,16 +231,18 @@ export default function NoteApp() {
             return group;
         });
 
-        return updatedGroups.map((group) => {
-            if (group.groupName === 'Trash' && noteToTrash) {
-                return {
-                    ...group,
-                    groupContent: [...group.groupContent, noteToTrash],
-                };
-            }
-            return group;
-        });
-    };
+        setGroups(updatedGroups);
+
+        // Reset the selected note if the deleted note was selected
+        if (selectedNoteId === noteId) {
+            setSelectedNoteId(null);
+        }
+
+        // Update the notes state if the current group is the one being modified
+        if (selectedGroupId === groupId) {
+            setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+        }
+    }
 
     // FINISHED display recently opened notes
     function handleDisplayRecentNotes(groups, sourceGroupName, note) {
@@ -348,6 +348,7 @@ export default function NoteApp() {
                     selectedNoteId={selectedNoteId}
                     handleEditNote={handleEditNote}
                     handleArchiveNote={handleArchiveNote}
+                    handlePermanentDeleteNote={handlePermanentDeleteNote}
                     groups={groups}
                     selectedGroupId={selectedGroupId}
                     handleMoveNoteBetweenGroups={handleMoveNoteBetweenGroups}
