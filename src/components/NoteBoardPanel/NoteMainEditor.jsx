@@ -57,13 +57,25 @@ export default function NoteMainEditor({
         }
     }
 
+    const titleCharLimit = 50;
+
+    function handleTitleChange(e) {
+        const inputTitle = e.target.value;
+        if (inputTitle.length <= titleCharLimit) {
+            setEditedDataTitle({ title: inputTitle });
+        }
+    }
+
+    const remainingChar = titleCharLimit - editedDataTitle.title?.length || 0;
+
     return (
         <div className="flex flex-col w-full h-full p-2">
             {selectedNotes ? (
                 <div className="flex flex-col w-full h-full px-8 py-2">
                     <NoteHeader
                         title={editedDataTitle.title ?? selectedNotes.title}
-                        onChange={(e) => setEditedDataTitle({ title: e.target.value })}
+                        handleTitleChange={handleTitleChange}
+                        remainingChar={remainingChar}
                         saveEditedDataHandler={saveEditedDataHandler}
                         deleteNoteHandler={deleteNoteHandler}
                         addNoteToFavoritesHandler={addNoteToFavoritesHandler}
