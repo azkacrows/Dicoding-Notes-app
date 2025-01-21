@@ -8,7 +8,6 @@ export default function NoteHeader({
     addNoteToFavoritesHandler,
     archiveNoteHandler,
     permanentDeleteNoteHandler,
-    deleteGroupHandler,
 }) {
     return (
         <div className="flex flex-row items-center justify-between">
@@ -25,7 +24,6 @@ export default function NoteHeader({
                 addNoteToFavoritesHandler={addNoteToFavoritesHandler}
                 archiveNoteHandler={archiveNoteHandler}
                 permanentDeleteNoteHandler={permanentDeleteNoteHandler}
-                deleteGroupHandler={deleteGroupHandler}
             />
         </div>
     );

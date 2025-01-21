@@ -16,7 +16,6 @@ export default function NoteMainEditor({
     groups,
     selectedGroupId,
     handleMoveNoteBetweenGroups,
-    handleDeleteGroup,
 }) {
     const selectedNotes = notes.find((note) => note.id === selectedNoteId);
 
@@ -58,11 +57,6 @@ export default function NoteMainEditor({
         }
     }
 
-    function deleteGroupHandler() {
-        const groupToDelete = groups.find((group) => group.groupId === selectedGroupId).groupId;
-        handleDeleteGroup(groupToDelete);
-    }
-
     return (
         <div className="flex flex-col w-full h-full p-2">
             {selectedNotes ? (
@@ -75,7 +69,6 @@ export default function NoteMainEditor({
                         addNoteToFavoritesHandler={addNoteToFavoritesHandler}
                         archiveNoteHandler={archiveNoteHandler}
                         permanentDeleteNoteHandler={permanentDeleteNoteHandler}
-                        deleteGroupHandler={deleteGroupHandler}
                     />
                     <div className="flex flex-col w-full h-full">
                         <NoteDateEditor date={selectedNotes.createdAt} />
